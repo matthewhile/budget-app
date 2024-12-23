@@ -17,17 +17,6 @@ function App() {
         });
     }, [])
 
-    // function addBudget(newBudget) {
-    //     axios.post("http://localhost:3001/budgets", newBudget)
-    //       .then((response) => {
-    //         // Update the state to include the new budget
-    //         setAllBudgets(prevBudgets => [...prevBudgets, response.data]);
-    //       })
-    //       .catch(error => {
-    //         console.error("Error adding budget:", error);
-    //       });
-    //   }
-
 
     return (
         <>
@@ -37,26 +26,16 @@ function App() {
                     <Button variant="primary" onClick={() => setShowAddBudgetModal(true)}>Add Budget</Button>
                     <Button variant="outline-primary">Add Expense</Button>
                 </Stack>
-                <div
-                style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-                    gap: "1rem",
-                    alignItems: "flex-start",
-                }}           
-                >
-                    <div className="App"> 
-                    {" "}
-                        {allBudgets.map((value, key) => (
-                            <BudgetCard
-                                key={key} 
-                                name={value.BudgetName}      // Passing budget name
-                                amount={value.ExpenseAmount}  // Passing budget amount
-                                max={value.Max}        // Passing max amount
-                            >
-                            </BudgetCard>
-                    ))} 
-                    </div>
+                <div className="budgetCards">
+                    {allBudgets.map((value, key) => (
+                        <BudgetCard
+                            key={key} 
+                            name={value.BudgetName}      // Passing budget name
+                            amount={value.BudgetAmount}  // Passing budget amount
+                            max={value.Max}              // Passing max amount
+                        >
+                        </BudgetCard>
+                    ))}                   
                 </div>
             </Container>
             <AddBudgetModal
