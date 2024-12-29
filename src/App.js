@@ -15,7 +15,12 @@ function App() {
         axios.get("http://localhost:3001/budgets").then((response) => {
             setAllBudgets(response.data); 
         });
-    }, [])
+    }, []);
+
+
+    function addBudget(newBudget) {
+        setAllBudgets((prevBudgets) => [...prevBudgets, newBudget]);
+    }
 
 
     return (
@@ -30,9 +35,9 @@ function App() {
                     {allBudgets.map((value, key) => (
                         <BudgetCard
                             key={key} 
-                            name={value.BudgetName}      // Passing budget name
-                            amount={value.BudgetAmount}  // Passing budget amount
-                            max={value.Max}              // Passing max amount
+                            name={value.BudgetName}      
+                            amount={value.BudgetAmount}  
+                            max={value.Max}              
                         >
                         </BudgetCard>
                     ))}                   
@@ -41,6 +46,7 @@ function App() {
             <AddBudgetModal
                 show={showAddBudgetModal}
                 handleClose={() => setShowAddBudgetModal(false)}
+                addBudget={addBudget}
             />
       </>           
    )

@@ -2,47 +2,26 @@ import { Form, Modal, Button } from "react-bootstrap"
 import { useRef } from "react"
 import axios from "axios"
 
-// export default function AddBudgetModal({ show, handleClose }) {
-//   const nameRef = useRef()
-//   const maxRef = useRef()
-
-//   // function handleSubmit(e) {
-//   //   e.preventDefault()
-//   //   // addBudget({
-//   //   //   name: nameRef.current.value,
-//   //   //   max: parseFloat(maxRef.current.value),
-//   //   // })
-//   //   handleClose()  
-//   // }
-
-//   const handleSubmit = (data) => {
-//     axios.post("http://localhost:3001/budgets", data).then((response) => {
-//       //setAllBudgets(response.data);
-//       console.log("It worked!")
-//     });
-//   };
-
-export default function AddBudgetModal({ show, handleClose }) {
+export default function AddBudgetModal({ show, handleClose, addBudget }) {
   const nameRef = useRef();
   const maxRef = useRef();
 
   async function handleSubmit(e) {
     e.preventDefault();
 
-    // Construct new budget data from form inputs
     const newBudget = {
       BudgetName: nameRef.current.value,  
       Max: parseFloat(maxRef.current.value),
     };
 
     try {
-      // Send POST request to add a new budget to the server
-      await axios.post("http://localhost:3001/budgets", newBudget);
+      const response = await axios.post("http://localhost:3001/budgets", newBudget);
 
-      // Close modal after successful submission
+      addBudget(response.data);
       handleClose();
-      window.location.reload();
-    } catch (error) {
+      
+    } 
+    catch (error) {
       console.error("There was an error adding the budget!", error);
     }
   }
