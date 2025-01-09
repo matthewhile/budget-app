@@ -1,10 +1,12 @@
 import { Form, Modal, Button } from "react-bootstrap"
 import { useRef } from "react"
 import axios from "axios"
+import { useBudgets } from "../contexts/BudgetsContext";
 
-export default function AddBudgetModal({ show, handleClose, addBudget }) {
+export default function AddBudgetModal({ show, handleClose }) {
   const nameRef = useRef();
   const maxRef = useRef();
+  const { addBudget } = useBudgets();
 
   async function handleSubmit(e) {
     e.preventDefault();

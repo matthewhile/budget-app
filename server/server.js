@@ -8,8 +8,11 @@ app.use(cors());
 const db = require('./models')
 
 // Routers
-const budgetRouter = require('./routes/Budgets')
-app.use("/budgets", budgetRouter);
+const budgetsRouter = require('./routes/Budgets')
+app.use("/budgets", budgetsRouter);
+
+const expensesRouter = require('./routes/Expenses')
+app.use("/expenses", expensesRouter );
 
 db.sequelize.sync().then(() => {
     app.listen(3001, () => {

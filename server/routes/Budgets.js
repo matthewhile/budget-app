@@ -4,19 +4,19 @@ const { Budgets } = require("../models");
 
 
 router.get("/", async (req, res) => {
-    const listOfBudgets = await Budgets.findAll();
-    res.json(listOfBudgets);
+    const budgets = await Budgets.findAll();
+    res.json(budgets);
 });
 
 
 router.post("/", async (req, res) => {
-    const newBudget = {
+    const budget = {
         ...req.body,
         BudgetAmount: 0,
     }
         
-    await Budgets.create(newBudget);
-    res.json(newBudget);
+    await Budgets.create(budget);
+    res.json(budget);
 });
 
 module.exports = router;

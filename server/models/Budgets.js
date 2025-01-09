@@ -17,10 +17,15 @@ module.exports = (sequelize, DataTypes) => {
         BudgetAmount: {
             type: DataTypes.DECIMAL(18, 2), 
             allowNull: true,
+            defaultValue: 0,
         },
     }, {
         timestamps: false, 
     });
+
+    Budgets.associate = (models) => {
+        Budgets.hasMany(models.Expenses)
+    }
 
     return Budgets;
 };
