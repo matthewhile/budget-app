@@ -17,6 +17,10 @@ export const BudgetsProvider = ({ children }) => {
         });
     }, []);
 
+    function addExpense(newExpense) {
+        setExpenses((prevExpenses) => [...prevExpenses, newExpense]);
+    }
+
     // Adds a new Budget to the state
     function addBudget(newBudget) {
         setAllBudgets((prevBudgets) => [...prevBudgets, newBudget]);
@@ -44,6 +48,7 @@ export const BudgetsProvider = ({ children }) => {
         allBudgets,
         expenses,
         addBudget,
+        addExpense,
         getBudgetExpenses
     }}>{children}</BudgetsContext.Provider>
   )

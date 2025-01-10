@@ -1,22 +1,39 @@
 import { Form, Modal, Button } from "react-bootstrap"
 import { useRef } from "react"
-//import { useBudgets, UNCATEGORIZED_BUDGET_ID} from "../contexts/BudgetsContext"
+import axios from "axios"
+import { useBudgets, UNCATEGORIZED_BUDGET_ID} from "../contexts/BudgetsContext"
 
 export default function AddExpenseModal({ show, handleClose, defaultBudgetId }) {
   const descriptionRef = useRef()
   const amountRef = useRef()
+  const budgetIdRef = useRef()
+  const { addExpense, allBudgets } = useBudgets();
+
   //const budgetIdRef = useRef()
   //const { addExpense, budgets } = useBudgets()
   
-  function handleSubmit(e) {
-    // e.preventDefault()
-    // addExpense({
-    //   description: descriptionRef.current.value,
-    //   amount: parseFloat(amountRef.current.value),
-    //   budgetId: budgetIdRef.current.value
-    // })
+  async function handleSubmit(e) {
+    e.preventDefault()
+    const newExpense = {
+      Description: descriptionRef.current.value,
+      ExpenseAmount: parseFloat(amountRef.current.value),
+      BudgetId: budgetIdRef.current.value
+    }
+
+    try {
+      const response = await axios.post("http://localhost:3001/expenses", newExpense);
+      addExpense(response.data);
+      handleClose();     
+    } 
+    catch (error) {
+      console.error("There was an error adding the expense!", error);
+    }
+
     handleClose()  
   }
+
+  
+  
 
   return (
     <Modal show={show} onHide={handleClose}>
@@ -41,15 +58,14 @@ export default function AddExpenseModal({ show, handleClose, defaultBudgetId }) 
           </Form.Group>
           <Form.Group className="mb-3" controlId="budgetId">
             <Form.Label>Budget</Form.Label>
-            {/* <Form.Select
-              defaultValue={defaultBudgetId} ref={budgetIdRef}>
-                <option id={UNCATEGORIZED_BUDGET_ID}>Uncategorized</option>
-                {budgets.map(budget => (
-                    <option key={budget.id} value={budget.id}>
-                      {budget.name}
+            <Form.Select defaultValue={defaultBudgetId} ref={budgetIdRef}>
+                {/* <option id={UNCATEGORIZED_BUDGET_ID}>Uncategorized</option> */}
+                {allBudgets.map((budget )=> (
+                    <option key={budget.Id} value={budget.Id}>
+                      {budget.BudgetName}
                     </option>
                 ))}
-            </Form.Select> */}
+            </Form.Select>
           </Form.Group>
           <div className="d-flex justify-content-end">
             <Button variant="primary" type="submit">

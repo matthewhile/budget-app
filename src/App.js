@@ -1,26 +1,26 @@
 import './App.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button, Stack } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import BudgetCard from "./components/BudgetCard";
 import AddBudgetModal from "./components/AddBudgetModal";
 import ViewExpensesModal from "./components/ViewExpensesModal"
-//import AddExpenseModal from "./components/AddExpenseModal";
+import AddExpenseModal from "./components/AddExpenseModal";
 import { useBudgets } from "./contexts/BudgetsContext";
 
 function App() {
-    
-    const [showAddExpenseModal, setShowAddExpenseModal] = useState(false)
+
     const [showAddBudgetModal, setShowAddBudgetModal] = useState(false)
-    //const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState()
+    const [showAddExpenseModal, setShowAddExpenseModal] = useState(false)
     const [viewExpensesModal, setViewExpensesModal] = useState()
+    const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState() 
     const { allBudgets, getBudgetExpenses } = useBudgets();
 
 
-    // function openAddExpenseModal(budgetId) {
-    //     setShowAddExpenseModal(true)
-    //     setAddExpenseModalBudgetId(budgetId)
-    //   }
+    function openAddExpenseModal(budgetId) {
+        setShowAddExpenseModal(true)
+        setAddExpenseModalBudgetId(budgetId)
+    }
 
     return (
         <>
@@ -31,16 +31,20 @@ function App() {
                     <Button variant="outline-primary" onClick={() => setShowAddExpenseModal(true)}>Add Expense</Button>
                 </Stack>
                 <div className="budgetCards">
-                    {allBudgets.map((value, key) => (
+                    {allBudgets.map(budget => (
                         <BudgetCard
-                            key={value.Id} 
-                            name={value.BudgetName}      
-                            amount={value.BudgetAmount}  
-                            max={value.Max}
-                            //onAddExpenseClick={() => openAddExpenseModal(value.Id)}
+                            key={budget.Id} 
+                            name={budget.BudgetName}      
+                            amount={budget.BudgetAmount}  
+                            max={budget.Max}
+                            onAddExpenseClick={() => {
+                                console.log("budget id in App.js " + budget.Id)
+                                openAddExpenseModal(budget.Id)
+                                setShowAddExpenseModal(true)
+                            }}
                             onViewExpensesClick={() => {
-                                console.log("Value id in App.js " + value.Id)
-                                getBudgetExpenses(value.Id)
+                                console.log("budget id in App.js " + budget.Id)
+                                getBudgetExpenses(budget.Id)
                                 setViewExpensesModal(true)
                             }}            
                         >
@@ -52,11 +56,11 @@ function App() {
                 show={showAddBudgetModal}
                 handleClose={() => setShowAddBudgetModal(false)}
             />
-             {/* <AddExpenseModal
+             <AddExpenseModal
                 show={showAddExpenseModal}
                 defaultBudgetId={addExpenseModalBudgetId}
                 handleClose={() => setShowAddExpenseModal(false)}
-            /> */}
+            />
             <ViewExpensesModal
                 show={viewExpensesModal}
                 handleClose={() => setViewExpensesModal(false)}
