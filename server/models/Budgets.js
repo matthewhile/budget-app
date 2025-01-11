@@ -14,11 +14,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DECIMAL(18, 2), 
             allowNull: false,
         },
-        BudgetAmount: {
-            type: DataTypes.DECIMAL(18, 2), 
-            allowNull: true,
-            defaultValue: 0,
-        },
     }, {
         timestamps: false, 
     });

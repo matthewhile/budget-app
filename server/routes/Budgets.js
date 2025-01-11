@@ -10,11 +10,7 @@ router.get("/", async (req, res) => {
 
 
 router.post("/", async (req, res) => {
-    const budget = {
-        ...req.body,
-        BudgetAmount: 0,
-    }
-        
+    const budget = req.body;
     await Budgets.create(budget);
     res.json(budget);
 });
