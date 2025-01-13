@@ -1,6 +1,5 @@
 import { Form, Modal, Button } from "react-bootstrap"
 import { useRef } from "react"
-import axios from "axios"
 import { useBudgets, UNCATEGORIZED_BUDGET_ID} from "../contexts/BudgetsContext"
 
 export default function AddExpenseModal({ show, handleClose, defaultBudgetId }) {
@@ -8,9 +7,6 @@ export default function AddExpenseModal({ show, handleClose, defaultBudgetId }) 
   const amountRef = useRef()
   const budgetIdRef = useRef()
   const { addExpense, allBudgets } = useBudgets();
-
-  //const budgetIdRef = useRef()
-  //const { addExpense, budgets } = useBudgets()
   
   async function handleSubmit(e) {
     e.preventDefault()
@@ -21,19 +17,14 @@ export default function AddExpenseModal({ show, handleClose, defaultBudgetId }) 
     }
 
     try {
-      const response = await axios.post("http://localhost:3001/expenses", newExpense);
-      addExpense(response.data);
+      addExpense(newExpense);
       handleClose();     
     } 
     catch (error) {
       console.error("There was an error adding the expense!", error);
     }
-
     handleClose()  
   }
-
-  
-  
 
   return (
     <Modal show={show} onHide={handleClose}>
@@ -60,7 +51,7 @@ export default function AddExpenseModal({ show, handleClose, defaultBudgetId }) 
             <Form.Label>Budget</Form.Label>
             <Form.Select defaultValue={defaultBudgetId} ref={budgetIdRef}>
                 {/* <option id={UNCATEGORIZED_BUDGET_ID}>Uncategorized</option> */}
-                {allBudgets.map((budget )=> (
+                {allBudgets.map((budget)=> (
                     <option key={budget.Id} value={budget.Id}>
                       {budget.BudgetName}
                     </option>

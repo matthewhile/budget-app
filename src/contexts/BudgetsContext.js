@@ -10,38 +10,41 @@ export function useBudgets() {
 export const BudgetsProvider = ({ children }) => {
     const [allBudgets, setAllBudgets] = useState([]);
     const [expenses, setExpenses] = useState([]);
+    const [newData, setNewData] = useState(false);
 
     useEffect(() => {
-        axios.get("http://localhost:3001/budgets").then((response) => {
-            setAllBudgets(response.data); 
-        });
-    }, []);
+        // Fetch all budgets
+        axios.get("http://localhost:3001/budgets")
+            .then(response => setAllBudgets(response.data))
+            .catch(error => console.error("Error fetching budgets:", error));
 
+        // Fetch all expenses
+        axios.get("http://localhost:3001/expenses")
+            .then(response => setExpenses(response.data))
+            .catch(error => console.error("Error fetching expenses:", error));
+    }, [newData]);
+
+    // Add a new expense 
     function addExpense(newExpense) {
-        setExpenses((prevExpenses) => [...prevExpenses, newExpense]);
+        setExpenses((prevExpenses) => [...prevExpenses, newExpense]); // Optimistic update
+        axios.post("http://localhost:3001/expenses", newExpense)
+            .then(() => setNewData(prev => !prev))
+            .catch(error => console.error("Error adding expense:", error));
     }
-
-    // Adds a new Budget to the state
+    
+    // Add a new budget
     function addBudget(newBudget) {
-        setAllBudgets((prevBudgets) => [...prevBudgets, newBudget]);
+        setAllBudgets((prevBudgets) => [...prevBudgets, newBudget]); // Optimistic update
+        axios.post("http://localhost:3001/budgets", newBudget)
+            .then(() => setNewData(prev => !prev))
+            .catch(error => console.error("Error adding budget:", error));
+    }
+    
+    // Get all expenses for a specific budget
+    function getBudgetExpenses(budgetId) {
+        return expenses.filter(expense => expense.BudgetId === budgetId);
     }
 
-    // Gets all expenses associated with the specified budget
-    function getBudgetExpenses(budgetId) {
-        if (!budgetId) {
-            console.error("Invalid budgetId:", budgetId);
-            return [];
-        }
-        return axios.get(`http://localhost:3001/expenses/${budgetId}`)
-            .then((response) => {
-                console.log("Expenses fetched for budgetId:", budgetId, response.data);
-                setExpenses(response.data); // Return the fetched expenses
-            })
-            .catch((error) => {
-                console.error("Error fetching budget expenses:", error);
-                return []; // Return an empty array in case of error
-            });
-    }
     
     return (
     <BudgetsContext.Provider value={{

@@ -44,7 +44,7 @@ export default function BudgetCard({
             {!hideButtons && (
                 <Stack direction="horizontal" gap="2" className="mt-4">
                   <Button 
-                      variant="outline-primary" 
+                      variant={getAddBtnColor(amount, max)}
                       className="ms-auto" 
                       onClick={onAddExpenseClick}
                   >
@@ -67,3 +67,11 @@ function getProgressBarColor(amount, max) {
     if (ratio < 0.75) return "warning"
     return "danger"
 }
+
+function getAddBtnColor(amount, max) {
+  const ratio = amount / max
+  if (ratio < 0.5) return "outline-success"
+  if (ratio < 0.75) return "outline-warning"
+  return "outline-danger"
+}
+

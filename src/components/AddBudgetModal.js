@@ -1,6 +1,5 @@
 import { Form, Modal, Button } from "react-bootstrap"
 import { useRef } from "react"
-import axios from "axios"
 import { useBudgets } from "../contexts/BudgetsContext";
 
 export default function AddBudgetModal({ show, handleClose }) {
@@ -17,8 +16,7 @@ export default function AddBudgetModal({ show, handleClose }) {
     };
 
     try {
-      const response = await axios.post("http://localhost:3001/budgets", newBudget);
-      addBudget(response.data);
+      addBudget(newBudget);
       handleClose();     
     } 
     catch (error) {

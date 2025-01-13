@@ -31,11 +31,16 @@ function App() {
                     <Button variant="outline-primary" onClick={() => setShowAddExpenseModal(true)}>Add Expense</Button>
                 </Stack>
                 <div className="budgetCards">
-                    {allBudgets.map(budget => (
+                    {allBudgets.map(budget => {
+                        const amount = getBudgetExpenses(budget.Id).reduce(
+                            (total, expense) => total + expense.ExpenseAmount,
+                            0
+                          )
+                          return (
                         <BudgetCard
                             key={budget.Id} 
                             name={budget.BudgetName}      
-                            amount={budget.BudgetAmount}  
+                            amount={amount}  
                             max={budget.Max}
                             onAddExpenseClick={() => {
                                 console.log("budget id in App.js " + budget.Id)
@@ -44,12 +49,12 @@ function App() {
                             }}
                             onViewExpensesClick={() => {
                                 console.log("budget id in App.js " + budget.Id)
-                                getBudgetExpenses(budget.Id)
-                                setViewExpensesModal(true)
+                                setViewExpensesModal(budget.Id)
                             }}            
                         >
                         </BudgetCard>
-                    ))}                   
+                        )
+                    })}                   
                 </div>
             </Container>
             <AddBudgetModal
@@ -62,8 +67,8 @@ function App() {
                 handleClose={() => setShowAddExpenseModal(false)}
             />
             <ViewExpensesModal
-                show={viewExpensesModal}
-                handleClose={() => setViewExpensesModal(false)}
+                budgetId={viewExpensesModal}
+                handleClose={() => setViewExpensesModal()}
             />
       </>           
    )
