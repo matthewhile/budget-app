@@ -1,0 +1,89 @@
+# ========== GLOBAL ==========
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# OS generated
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.*
+
+
+# ========== FRONTEND (React + Node + Vite/CRA) ==========
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.next/
+frontend/.cache/
+frontend/.parcel-cache/
+
+# React specific
+frontend/.eslintcache
+frontend/coverage/
+frontend/public/build/
+frontend/public/dist/
+
+# Vite
+frontend/.vite/
+frontend/.vite-cache/
+
+
+# ========== BACKEND (.NET Core) ==========
+BudgetApp/bin/
+BudgetApp/obj/
+
+# User-specific files
+BudgetApp/*.user
+BudgetApp/*.suo
+BudgetApp/.vs/
+BudgetApp/.vscode/
+
+# Configuration files
+BudgetApp/appsettings.Development.json
+BudgetApp/appsettings.Local.json
+BudgetApp/secrets.json
+
+# EF Core migration snapshot backups (optional)
+BudgetApp/Migrations/*.Designer.cs
+BudgetApp/Migrations/*.resx
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+
+# ========== MSSQL/SQL Server ==========
+*.mdf
+*.ldf
+*.ndf
+*.bak
+*.sqlproj.user
+
+# Local DB settings
+BudgetApp/*.dbmdl
+
+
+# ========== IDEs ==========
+.vscode/
+*.code-workspace
+
+
+# ========== OPTIONAL ==========
+# Ignore test results
+test-results/
+
+# Ignore coverage reports
+coverage/
+
+# Ignore build artifacts from bundlers/tools
+build/
+dist/
+out/
