@@ -49,6 +49,7 @@ BudgetApp/.vscode/
 # Configuration files
 BudgetApp/appsettings.Development.json
 BudgetApp/appsettings.Local.json
+BudgetApp/appsettings.json
 BudgetApp/secrets.json
 
 # EF Core migration snapshot backups (optional)
