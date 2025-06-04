@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BudgetApp.Data;
+namespace BudgetApp.Entities;
 
 public partial class User
 {

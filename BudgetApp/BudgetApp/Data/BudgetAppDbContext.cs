@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BudgetApp.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BudgetApp.Data;
