@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BudgetApp.Entities;
 
-public partial class TimePeriod
+public partial class Timeperiod
 {
     public int Id { get; set; }
 
@@ -11,7 +11,7 @@ public partial class TimePeriod
 
     public int Year { get; set; }
 
-    public int UserId { get; set; }
+    public int Userid { get; set; }
 
     public virtual ICollection<Budget> Budgets { get; set; } = new List<Budget>();
 

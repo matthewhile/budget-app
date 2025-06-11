@@ -13,9 +13,9 @@ public partial class Expense
 
     public DateOnly Date { get; set; }
 
-    public int? BudgetId { get; set; }
+    public int? Budgetid { get; set; }
 
-    public int UserId { get; set; }
+    public int Userid { get; set; }
 
     public virtual Budget? Budget { get; set; }
 
