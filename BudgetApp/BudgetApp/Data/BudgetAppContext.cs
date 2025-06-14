@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using BudgetApp.Entities;
+using BudgetApp.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BudgetApp.Data;
@@ -20,7 +20,7 @@ public partial class BudgetAppContext : DbContext
 
     public virtual DbSet<Expense> Expenses { get; set; }
 
-    public virtual DbSet<Timeperiod> Timeperiods { get; set; }
+    public virtual DbSet<TimePeriod> TimePeriods { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
@@ -37,22 +37,22 @@ public partial class BudgetAppContext : DbContext
             entity.ToTable("budgets");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Maxamount)
+            entity.Property(e => e.MaxAmount)
                 .HasPrecision(10, 2)
                 .HasColumnName("maxamount");
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
                 .HasColumnName("name");
-            entity.Property(e => e.Timeperiodid).HasColumnName("timeperiodid");
-            entity.Property(e => e.Userid).HasColumnName("userid");
+            entity.Property(e => e.TimePeriodId).HasColumnName("timeperiodid");
+            entity.Property(e => e.UserId).HasColumnName("userid");
 
-            entity.HasOne(d => d.Timeperiod).WithMany(p => p.Budgets)
-                .HasForeignKey(d => d.Timeperiodid)
+            entity.HasOne(d => d.TimePeriod).WithMany(p => p.Budgets)
+                .HasForeignKey(d => d.TimePeriodId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("budgets_timeperiodid_fkey");
 
             entity.HasOne(d => d.User).WithMany(p => p.Budgets)
-                .HasForeignKey(d => d.Userid)
+                .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("budgets_userid_fkey");
         });
@@ -67,24 +67,24 @@ public partial class BudgetAppContext : DbContext
             entity.Property(e => e.Amount)
                 .HasPrecision(10, 2)
                 .HasColumnName("amount");
-            entity.Property(e => e.Budgetid).HasColumnName("budgetid");
+            entity.Property(e => e.BudgetId).HasColumnName("budgetid");
             entity.Property(e => e.Date).HasColumnName("date");
             entity.Property(e => e.Description)
                 .HasMaxLength(255)
                 .HasColumnName("description");
-            entity.Property(e => e.Userid).HasColumnName("userid");
+            entity.Property(e => e.UserId).HasColumnName("userid");
 
             entity.HasOne(d => d.Budget).WithMany(p => p.Expenses)
-                .HasForeignKey(d => d.Budgetid)
+                .HasForeignKey(d => d.BudgetId)
                 .HasConstraintName("expenses_budgetid_fkey");
 
             entity.HasOne(d => d.User).WithMany(p => p.Expenses)
-                .HasForeignKey(d => d.Userid)
+                .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("expenses_userid_fkey");
         });
 
-        modelBuilder.Entity<Timeperiod>(entity =>
+        modelBuilder.Entity<TimePeriod>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("timeperiods_pkey");
 
@@ -92,11 +92,11 @@ public partial class BudgetAppContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Month).HasColumnName("month");
-            entity.Property(e => e.Userid).HasColumnName("userid");
+            entity.Property(e => e.UserId).HasColumnName("userid");
             entity.Property(e => e.Year).HasColumnName("year");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Timeperiods)
-                .HasForeignKey(d => d.Userid)
+            entity.HasOne(d => d.User).WithMany(p => p.TimePeriods)
+                .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("timeperiods_userid_fkey");
         });
@@ -113,7 +113,7 @@ public partial class BudgetAppContext : DbContext
             entity.Property(e => e.Email)
                 .HasMaxLength(255)
                 .HasColumnName("email");
-            entity.Property(e => e.Passwordhash)
+            entity.Property(e => e.Password)
                 .HasMaxLength(255)
                 .HasColumnName("passwordhash");
             entity.Property(e => e.Username)

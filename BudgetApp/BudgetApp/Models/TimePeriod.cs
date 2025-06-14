@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BudgetApp.Entities;
+namespace BudgetApp.Models;
 
-public partial class Timeperiod
+public partial class TimePeriod
 {
     public int Id { get; set; }
 
@@ -11,7 +11,7 @@ public partial class Timeperiod
 
     public int Year { get; set; }
 
-    public int Userid { get; set; }
+    public int UserId { get; set; }
 
     public virtual ICollection<Budget> Budgets { get; set; } = new List<Budget>();
 

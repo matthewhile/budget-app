@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BudgetApp.Entities;
+namespace BudgetApp.Models;
 
 public partial class Budget
 {
@@ -9,15 +9,15 @@ public partial class Budget
 
     public string Name { get; set; } = null!;
 
-    public decimal Maxamount { get; set; }
+    public decimal MaxAmount { get; set; }
 
-    public int Timeperiodid { get; set; }
+    public int TimePeriodId { get; set; }
 
-    public int Userid { get; set; }
+    public int UserId { get; set; }
 
     public virtual ICollection<Expense> Expenses { get; set; } = new List<Expense>();
 
-    public virtual Timeperiod Timeperiod { get; set; } = null!;
+    public virtual TimePeriod TimePeriod { get; set; } = null!;
 
     public virtual User User { get; set; } = null!;
 }
