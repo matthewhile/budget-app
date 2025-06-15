@@ -1,12 +1,34 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BudgetApp.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BudgetApp.Controllers
 {
-    public class BudgetController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class BudgetController : ControllerBase
     {
-        public IActionResult Index()
+        private readonly BudgetService _budgeService;
+
+        public BudgetController(BudgetService budgeService)
         {
-            return View();
+            _budgeService = budgeService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllBudgets()
+        {
+            var budgets = await _budgeService.GetAllBudgetsAsync();
+            return Ok(budgets);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetBudgetById(int id)
+        {
+            var budget = await _budgeService.GetBudgetByIdAsync(id);
+            if (budget == null)
+                return NotFound();
+
+            return Ok(budget);
         }
     }
 }

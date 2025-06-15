@@ -1,12 +1,29 @@
 using BudgetApp.Data;
+using BudgetApp.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<BudgetAppContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("BudgetAppDB")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("BudgetAppDB")));
+
+builder.Services.AddScoped<BudgetService>();
+
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddControllers();
+
+// Configure CORS for React
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", policy =>
+    {
+        policy.AllowAnyOrigin() // You can restrict this to specific origins in production
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
