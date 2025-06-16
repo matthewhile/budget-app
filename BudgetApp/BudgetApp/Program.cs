@@ -17,9 +17,9 @@ builder.Services.AddControllers();
 // Configure CORS for React
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowReactApp", policy =>
+    options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.AllowAnyOrigin() // You can restrict this to specific origins in production
+        policy.WithOrigins("http://localhost:5173") 
               .AllowAnyMethod()
               .AllowAnyHeader();
     });
@@ -41,6 +41,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseCors("AllowFrontend");
 
 app.MapControllerRoute(
     name: "default",
