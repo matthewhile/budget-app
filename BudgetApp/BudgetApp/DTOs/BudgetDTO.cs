@@ -1,4 +1,6 @@
-﻿namespace BudgetApp.DTOs
+﻿using BudgetApp.Models;
+
+namespace BudgetApp.DTOs
 {
     public class BudgetDTO
     {
@@ -8,8 +10,10 @@
 
         public decimal MaxAmount { get; set; }
 
-        public int TimePeriodId { get; set; }
+        //public int TimePeriodId { get; set; }
 
-        public int UserId { get; set; }
+        //public int UserId { get; set; }
+
+        public decimal TotalSpent { get; set; }
     }
 }

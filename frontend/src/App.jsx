@@ -20,7 +20,7 @@ function App() {
                       <BudgetCard
                           key={budget.id} 
                           name={budget.name}      
-                          amount={100}
+                          amount={budget.totalSpent}
                           max={budget.maxAmount}          
                       >
                       </BudgetCard>
