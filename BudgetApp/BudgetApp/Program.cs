@@ -9,6 +9,7 @@ builder.Services.AddDbContext<BudgetAppContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("BudgetAppDB")));
 
 builder.Services.AddScoped<BudgetService>();
+builder.Services.AddScoped<ExpenseService>();
 
 builder.Services.AddControllersWithViews();
 
