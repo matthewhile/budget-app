@@ -7,6 +7,7 @@ import { useBudgets } from './contexts/BudgetContext';
 function App() {
 
   const { allBudgets } = useBudgets();
+  const [viewExpensesModal, setViewExpensesModal] = useState();
   return (
       <>
           <Container className="my-4">
@@ -21,12 +22,21 @@ function App() {
                           key={budget.id} 
                           name={budget.name}      
                           amount={budget.totalSpent}
-                          max={budget.maxAmount}          
+                          max={budget.maxAmount}     
+
+                          onViewExpensesClick={() => {
+                                console.log("budget id in App.js " + budget.Id)
+                                setViewExpensesModal(budget.Id)
+                          }}      
                       >
                       </BudgetCard>
                   ))}                 
               </div>
           </Container>
+          <ViewExpensesModal
+                budgetId={viewExpensesModal}
+                handleClose={() => setViewExpensesModal()}
+            />
     </>           
   )
 }
