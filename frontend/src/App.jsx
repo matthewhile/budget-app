@@ -1,7 +1,10 @@
 import './App.css'
+import { useState } from 'react';
 import { Container, Stack, Button } from 'react-bootstrap';
 import BudgetCard from './components/BudgetCard';
+import ViewExpensesModal from "./components/ViewExpensesModal";
 import { useBudgets } from './contexts/BudgetContext';
+
 
 
 function App() {
@@ -25,8 +28,8 @@ function App() {
                           max={budget.maxAmount}     
 
                           onViewExpensesClick={() => {
-                                console.log("budget id in App.js " + budget.Id)
-                                setViewExpensesModal(budget.Id)
+                                console.log("budget id in App.js " + budget.id)
+                                setViewExpensesModal(budget.id)
                           }}      
                       >
                       </BudgetCard>

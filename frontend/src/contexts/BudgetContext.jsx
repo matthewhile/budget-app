@@ -9,6 +9,8 @@ export function useBudgets() {
 
 export const BudgetsProvider = ({ children }) => {
     const [allBudgets, setAllBudgets] = useState([]);
+    const [expensesByBudget, setExpensesByBudget] = useState({});
+
 
 
     useEffect(() => {
@@ -16,14 +18,25 @@ export const BudgetsProvider = ({ children }) => {
         axios.get("http://localhost:5023/api/budget")
             .then(response => setAllBudgets(response.data))
             .catch(error => console.error("Error fetching budgets:", error));
-
-        // Fetch all expenses
     }, []);
+
+    function getBudgetExpenses(budgetId) {
+        axios.get(`http://localhost:5023/api/expense/${budgetId}`)
+            .then(response => {
+                setExpensesByBudget(prev => ({
+                    ...prev,
+                    [budgetId]: response.data
+                }));
+            })
+            .catch(error => console.error("Error fetching expenses:", error));
+    }
 
     
     return (
     <BudgetsContext.Provider value={{
         allBudgets,
+        expensesByBudget,
+        getBudgetExpenses
     }}>{children}</BudgetsContext.Provider>
   )
 }
