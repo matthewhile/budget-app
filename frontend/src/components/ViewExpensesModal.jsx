@@ -16,6 +16,8 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
   }, [budgetId]);
 
   const expenses = expensesByBudget[budgetId] || [];
+  const budget = allBudgets.find(b => b.id === budgetId);
+  const budgetName = budget ? budget.name : null;
 
   return (
     <Modal show={budgetId != null} onHide={handleClose}>
@@ -23,7 +25,7 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
         <Modal.Title>
           <Stack direction="horizontal" gap="2">
             
-            <div>Expenses
+            <div>Expenses - {budgetName} 
             </div>
             {/* {budgetId !== UNCATEGORIZED_BUDGET_ID && (
               <Button
@@ -42,21 +44,27 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
       </Modal.Header>
       <Modal.Body>
         <Stack direction="vertical" gap="3">
-          {expenses.map(expense => (
-            <Stack direction="horizontal" gap="2" key={expense.id}>
-              <div className="me-auto fs-4">{expense.description}</div>
-              <div className="fs-5">
-                {currencyFormatter.format(expense.amount)}
-              </div>
-              {/* <Button
-                onClick={() => deleteExpense(expense)}
-                size="sm"
-                variant="outline-danger"
-              >
-                &times;
-              </Button> */}
-            </Stack>
-          ))}
+            {/* <div className="me-auto" gap="2">
+                <span>Name</span>
+                <span>Date</span>
+                <span>Amount</span>
+            </div> */}
+            {expenses.map(expense => (
+                <Stack direction="horizontal" gap="2" key={expense.id}>
+                <div className="me-auto fs-4">{expense.description}</div>
+                <div className="me-fixed fs-5">{expense.date}</div>
+                <div className="fs-5">
+                    {currencyFormatter.format(expense.amount)}
+                </div>
+                {/* <Button
+                    onClick={() => deleteExpense(expense)}
+                    size="sm"
+                    variant="outline-danger"
+                >
+                    &times;
+                </Button> */}
+                </Stack>
+            ))}
         </Stack>
       </Modal.Body>
     </Modal>
