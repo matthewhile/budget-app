@@ -43,5 +43,29 @@ namespace BudgetApp.Services
                 })
                 .FirstOrDefaultAsync();
         }
+
+        public async Task<BudgetDTO> CreateBudgetAsync(AddBudgetDTO dto)
+        {
+            var budget = new Budget
+            {
+                Name = dto.Name,
+                MaxAmount = dto.MaxAmount,
+                //TimePeriodId = dto.TimePeriodId,
+                //UserId = dto.UserId
+            };
+
+            _context.Budgets.Add(budget);
+            await _context.SaveChangesAsync();
+
+            return new BudgetDTO
+            {
+                Id = budget.Id,
+                Name = budget.Name,
+                MaxAmount = budget.MaxAmount,
+                TotalSpent = 0
+                //TimePeriodId = budget.TimePeriodId,
+                //UserId = budget.UserId
+            };
+        }
     }
 }
