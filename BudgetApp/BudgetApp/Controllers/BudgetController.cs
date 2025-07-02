@@ -1,4 +1,5 @@
-﻿using BudgetApp.Services;
+﻿using BudgetApp.DTOs;
+using BudgetApp.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BudgetApp.Controllers
@@ -29,6 +30,14 @@ namespace BudgetApp.Controllers
                 return NotFound();
 
             return Ok(budget);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddBudget([FromBody] AddBudgetDTO dto)
+        {
+            if (dto == null) return BadRequest();
+            var createdBudget = await _budgeService.CreateBudgetAsync(dto);
+            return CreatedAtAction(nameof(GetBudgetById), new { id = createdBudget.Id }, createdBudget);
         }
     }
 }
