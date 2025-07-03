@@ -22,9 +22,9 @@ namespace BudgetApp.Services
                     Id = b.Id,
                     Name = b.Name,
                     MaxAmount = b.MaxAmount,
-                    TotalSpent = b.Expenses.Sum(e => e.Amount)
-                    //TimePeriodId = b.TimePeriodId,
-                    //UserId = b.UserId
+                    TotalSpent = b.Expenses.Sum(e => e.Amount),
+                    TimePeriodId = b.TimePeriodId,
+                    UserId = b.UserId
                 })
                 .ToListAsync();
         }
@@ -38,8 +38,8 @@ namespace BudgetApp.Services
                     Id = b.Id,
                     Name = b.Name,
                     MaxAmount = b.MaxAmount,
-                    //TimePeriodId = b.TimePeriodId,
-                    //UserId = b.UserId
+                    TimePeriodId = b.TimePeriodId,
+                    UserId = b.UserId
                 })
                 .FirstOrDefaultAsync();
         }
@@ -50,8 +50,8 @@ namespace BudgetApp.Services
             {
                 Name = dto.Name,
                 MaxAmount = dto.MaxAmount,
-                //TimePeriodId = dto.TimePeriodId,
-                //UserId = dto.UserId
+                TimePeriodId = 1,
+                UserId = 1
             };
 
             _context.Budgets.Add(budget);
@@ -62,9 +62,9 @@ namespace BudgetApp.Services
                 Id = budget.Id,
                 Name = budget.Name,
                 MaxAmount = budget.MaxAmount,
-                TotalSpent = 0
-                //TimePeriodId = budget.TimePeriodId,
-                //UserId = budget.UserId
+                TotalSpent = 0,
+                TimePeriodId = budget.TimePeriodId,
+                UserId = budget.UserId
             };
         }
     }

@@ -36,7 +36,7 @@ public partial class BudgetAppContext : DbContext
 
             entity.ToTable("budgets");
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
             entity.Property(e => e.MaxAmount)
                 .HasPrecision(10, 2)
                 .HasColumnName("max_amount");
@@ -63,7 +63,7 @@ public partial class BudgetAppContext : DbContext
 
             entity.ToTable("expenses");
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
             entity.Property(e => e.Amount)
                 .HasPrecision(10, 2)
                 .HasColumnName("amount");

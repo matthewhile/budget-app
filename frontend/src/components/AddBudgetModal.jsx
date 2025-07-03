@@ -7,26 +7,26 @@ export default function AddBudgetModal({ show, handleClose }) {
   const maxRef = useRef();
   const { addBudget } = useBudgets();
 
-//   async function handleSubmit(e) {
-//     e.preventDefault();
+  async function handleSubmit(e) {
+    e.preventDefault();
 
-//     const newBudget = {
-//       BudgetName: nameRef.current.value,  
-//       Max: parseFloat(maxRef.current.value),
-//     };
+    const newBudget = {
+      name: nameRef.current.value,  
+      maxAmount: parseFloat(maxRef.current.value),
+    };
 
-//     try {
-//       addBudget(newBudget);
-//       handleClose();     
-//     } 
-//     catch (error) {
-//       console.error("There was an error adding the budget!", error);
-//     }
-//   }
+    try {
+      addBudget(newBudget);
+      handleClose();     
+    } 
+    catch (error) {
+      console.error("There was an error adding the budget!", error);
+    }
+  }
 
   return (
     <Modal show={show} onHide={handleClose}>
-      <Form /*onSubmit={handleSubmit}*/>
+      <Form onSubmit={handleSubmit}>
         <Modal.Header closeButton>
           <Modal.Title>New Budget</Modal.Title>
         </Modal.Header>
