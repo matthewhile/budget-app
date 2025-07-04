@@ -1,5 +1,6 @@
 ﻿using BudgetApp.Data;
 using BudgetApp.DTOs;
+using BudgetApp.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BudgetApp.Services
@@ -40,6 +41,35 @@ namespace BudgetApp.Services
                     Date = e.Date,
                 })
                 .ToListAsync();
+        }
+
+        // Add ExpenseById method or use GetBudgetExpensesAsync in ExpenseController?
+
+
+        // Create a new expense
+        public async Task<ExpenseDTO> CreateExpenseAsync(AddExpenseDTO dto)
+        {
+            var expense = new Expense
+            {
+                Description = dto.Description,
+                Amount = dto.Amount,
+                Date = dto.Date,
+                BudgetId = dto.BudgetId,
+                UserId = 1
+            };
+
+            _context.Expenses.Add(expense);
+            await _context.SaveChangesAsync();
+
+            return new ExpenseDTO
+            {
+                Id = expense.Id,
+                Description= expense.Description,
+                Amount = expense.Amount,
+                Date = expense.Date,
+                BudgetId = expense.BudgetId,
+                UserId = expense.UserId
+            };
         }
     }
 }
