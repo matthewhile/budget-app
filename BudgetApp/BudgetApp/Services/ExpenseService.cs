@@ -29,6 +29,22 @@ namespace BudgetApp.Services
                 .ToListAsync();
         }
 
+        public async Task<ExpenseDTO?> GetExpenseByIdAsync(int id)
+        {
+            return await _context.Expenses
+                .Where(e => e.Id == id)
+                .Select(e => new ExpenseDTO
+                {
+                    Id = e.Id,
+                    Description = e.Description,
+                    Amount = e.Amount,
+                    Date = e.Date,
+                    BudgetId = e.BudgetId,
+                    UserId = e.UserId
+                })
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<List<ExpenseDTO>> GetBudgetExpensesAsync(int id)
         {
             return await _context.Expenses
@@ -42,9 +58,6 @@ namespace BudgetApp.Services
                 })
                 .ToListAsync();
         }
-
-        // Add ExpenseById method or use GetBudgetExpensesAsync in ExpenseController?
-
 
         // Create a new expense
         public async Task<ExpenseDTO> CreateExpenseAsync(AddExpenseDTO dto)

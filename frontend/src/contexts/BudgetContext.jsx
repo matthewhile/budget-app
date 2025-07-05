@@ -22,7 +22,7 @@ export const BudgetsProvider = ({ children }) => {
     }, []);
 
     function getBudgetExpenses(budgetId) {
-        axios.get(`http://localhost:5023/api/expense/${budgetId}`)
+        axios.get(`http://localhost:5023/api/expense/budgetId/${budgetId}`)
             .then(response => {
                 setExpensesByBudget(prev => ({
                     ...prev,

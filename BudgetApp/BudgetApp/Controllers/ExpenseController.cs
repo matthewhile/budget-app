@@ -1,4 +1,6 @@
-﻿using BudgetApp.Services;
+﻿using BudgetApp.DTOs;
+using BudgetApp.Models;
+using BudgetApp.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
@@ -16,7 +18,18 @@ namespace BudgetApp.Controllers
             _expenseService = expenseService;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("expenseId/{id}")]
+        public async Task<IActionResult> GetExpenseById(int id)
+        {
+            var expense = await _expenseService.GetExpenseByIdAsync(id);
+            if (expense == null)
+            {
+                return NotFound();
+            }
+            return Ok(expense);
+        }
+
+        [HttpGet("budgetId/{id}")]
         public async Task<IActionResult> GetBudgetExpenses(int id)
         {
             var expenses = await _expenseService.GetBudgetExpensesAsync(id);
@@ -25,6 +38,15 @@ namespace BudgetApp.Controllers
                 return NotFound();
             }
             return Ok(expenses);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddNewExpense(AddExpenseDTO dto)
+        {
+            if (dto == null) return BadRequest();
+            var newExpense = await _expenseService.CreateExpenseAsync(dto);
+            return CreatedAtAction(nameof(GetExpenseById), new {id = newExpense.Id}, newExpense);
+
         }
     }
 }

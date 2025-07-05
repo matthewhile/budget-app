@@ -36,8 +36,8 @@ namespace BudgetApp.Controllers
         public async Task<IActionResult> AddBudget([FromBody] AddBudgetDTO dto)
         {
             if (dto == null) return BadRequest();
-            var createdBudget = await _budgeService.CreateBudgetAsync(dto);
-            return CreatedAtAction(nameof(GetBudgetById), new { id = createdBudget.Id }, createdBudget);
+            var newBudget = await _budgeService.CreateBudgetAsync(dto);
+            return CreatedAtAction(nameof(GetBudgetById), new { id = newBudget.Id }, newBudget);
         }
     }
 }
