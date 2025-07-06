@@ -10,7 +10,6 @@ export function useBudgets() {
 export const BudgetsProvider = ({ children }) => {
     const [allBudgets, setAllBudgets] = useState([]);
     const [expensesByBudget, setExpensesByBudget] = useState({});
-    const [newData, setNewData] = useState(false);
 
 
 
@@ -32,15 +31,31 @@ export const BudgetsProvider = ({ children }) => {
             .catch(error => console.error("Error fetching expenses:", error));
     }
 
-     // Add a new budget
+    // Add a new budget
     function addBudget(newBudget) {
         axios.post("http://localhost:5023/api/budget", newBudget)
             .then(response => {
                 const newBudget = response.data;
                 setAllBudgets(prevBudgets => [...prevBudgets, newBudget]);
             })
-            .catch(error => console.error("Error fetching expenses:", error));
+            .catch(error => console.error("Error adding budget:", error));
     }
+
+    // Add a new expense
+    function addExpense(newExpense) {
+        axios.post("http://localhost:5023/api/expense", newExpense)
+            .then(response => {
+                const addedExpense = response.data;
+                const budgetId = addedExpense.budgetId;
+
+                setExpensesByBudget(prev => ({
+                    ...prev,
+                    [budgetId]: [...(prev[budgetId] || []), addedExpense]
+                }));
+            })
+            .catch(error => console.error("Error adding expense:", error));
+    }
+
 
     
     return (
@@ -48,7 +63,8 @@ export const BudgetsProvider = ({ children }) => {
         allBudgets,
         expensesByBudget,
         getBudgetExpenses,
-        addBudget
+        addBudget,
+        addExpense
     }}>{children}</BudgetsContext.Provider>
   )
 }
