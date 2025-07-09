@@ -13,9 +13,12 @@ namespace BudgetApp.Controllers
     {
         private readonly ExpenseService _expenseService;
 
-        public ExpenseController(ExpenseService expenseService)
+        private readonly BudgetService _budgetService;
+
+        public ExpenseController(ExpenseService expenseService, BudgetService budgetService)
         {
             _expenseService = expenseService;
+            _budgetService = budgetService;
         }
 
         [HttpGet("expenseId/{id}")]
@@ -45,8 +48,8 @@ namespace BudgetApp.Controllers
         {
             if (dto == null) return BadRequest();
             var newExpense = await _expenseService.CreateExpenseAsync(dto);
-            return CreatedAtAction(nameof(GetExpenseById), new {id = newExpense.Id}, newExpense);
-
+            var updatedBudget = await _budgetService.GetBudgetByIdAsync((int)newExpense.BudgetId);
+            return CreatedAtAction(nameof(GetExpenseById), new {id = newExpense.Id}, new {newExpense, updatedBudget});
         }
     }
 }

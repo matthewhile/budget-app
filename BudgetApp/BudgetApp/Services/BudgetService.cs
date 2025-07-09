@@ -38,6 +38,7 @@ namespace BudgetApp.Services
                     Id = b.Id,
                     Name = b.Name,
                     MaxAmount = b.MaxAmount,
+                    TotalSpent = b.Expenses.Sum(e => e.Amount),
                     TimePeriodId = b.TimePeriodId,
                     UserId = b.UserId
                 })

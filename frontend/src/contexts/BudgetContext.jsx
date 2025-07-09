@@ -35,8 +35,8 @@ export const BudgetsProvider = ({ children }) => {
     function addBudget(newBudget) {
         axios.post("http://localhost:5023/api/budget", newBudget)
             .then(response => {
-                const newBudget = response.data;
-                setAllBudgets(prevBudgets => [...prevBudgets, newBudget]);
+                const addedBudget = response.data;
+                setAllBudgets(prevBudgets => [...prevBudgets, addedBudget]);
             })
             .catch(error => console.error("Error adding budget:", error));
     }
@@ -45,13 +45,17 @@ export const BudgetsProvider = ({ children }) => {
     function addExpense(newExpense) {
         axios.post("http://localhost:5023/api/expense", newExpense)
             .then(response => {
-                const addedExpense = response.data;
-                const budgetId = addedExpense.budgetId;
-
+                debugger;
+                const { addedExpense, updatedBudget } = response.data;
+                const budgetId = updatedBudget.id;
                 setExpensesByBudget(prev => ({
                     ...prev,
                     [budgetId]: [...(prev[budgetId] || []), addedExpense]
                 }));
+
+                setAllBudgets(prev => prev.map(b =>
+                    b.id === updatedBudget.id ? updatedBudget : b
+                ));
             })
             .catch(error => console.error("Error adding expense:", error));
     }
