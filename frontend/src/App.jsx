@@ -12,6 +12,7 @@ function App() {
 
   const { allBudgets } = useBudgets();
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false)
+  const [showEditBudgetModal, setShowEditBudgetModal] = useState(false)
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false)
   const [viewExpensesModal, setViewExpensesModal] = useState();
   const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState() 
@@ -45,6 +46,10 @@ function App() {
                           onViewExpensesClick={() => {
                                 console.log("budget id in App.js " + budget.id)
                                 setViewExpensesModal(budget.id)
+                          }}
+                          onEditBudgetClick={() => {
+                            openEditBudgetModal(budget.id)
+                            setShowEditBudgetModal(true)
                           }}      
                       >
                       </BudgetCard>
@@ -54,6 +59,10 @@ function App() {
           <AddBudgetModal
                 show={showAddBudgetModal}
                 handleClose={() => setShowAddBudgetModal(false)}
+          />
+          <EditBudgetModal
+                show={showEditBudgetModal}
+                handleClose={() => setShowEditBudgetModal(false)}
           />
           <AddExpenseModal
                 show={showAddExpenseModal}

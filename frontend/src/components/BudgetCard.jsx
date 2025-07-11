@@ -10,6 +10,7 @@ export default function BudgetCard({
     hideButtons,
     onAddExpenseClick,
     onViewExpensesClick,
+    onEditBudgetClick
   }) {
     const classNames = []
     if (amount > max) {
@@ -20,6 +21,7 @@ export default function BudgetCard({
 
   return (
     <Card className={classNames.join(" ")}>
+      <Button  variant="outline-secondary" onClick={onEditBudgetClick}>Edit</Button>
         <Card.Body>
             <Card.Title className="d-flex justify-content-between align-items-baseline fw-normal mb-3">
                <div className="me-2">{name}</div> 
