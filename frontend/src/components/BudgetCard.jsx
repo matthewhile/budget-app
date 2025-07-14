@@ -1,5 +1,10 @@
 import { Button, Card, ProgressBar, Stack } from "react-bootstrap";
 import { currencyFormatter } from "../utils"
+import '../App.css'
+import { FaEllipsisVertical } from "react-icons/fa6";
+
+
+
 
 
 export default function BudgetCard({ 
@@ -21,7 +26,9 @@ export default function BudgetCard({
 
   return (
     <Card className={classNames.join(" ")}>
-      <Button  variant="outline-secondary" onClick={onEditBudgetClick}>Edit</Button>
+      <button className="editBudgetBtn" onClick={onEditBudgetClick}>
+        <FaEllipsisVertical size={20} />
+      </button>
         <Card.Body>
             <Card.Title className="d-flex justify-content-between align-items-baseline fw-normal mb-3">
                <div className="me-2">{name}</div> 

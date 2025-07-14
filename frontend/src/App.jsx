@@ -5,6 +5,7 @@ import BudgetCard from './components/BudgetCard';
 import ViewExpensesModal from "./components/ViewExpensesModal";
 import AddBudgetModal from "./components/AddBudgetModal";
 import AddExpenseModal from "./components/AddExpenseModal";
+import EditBudgetModal from "./components/EditBudgetModal"
 import { useBudgets } from './contexts/BudgetContext';
 
 
@@ -12,7 +13,7 @@ function App() {
 
   const { allBudgets } = useBudgets();
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false)
-  const [showEditBudgetModal, setShowEditBudgetModal] = useState(false)
+  const [editBudgetModal, setEditBudgetModal] = useState(false)
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false)
   const [viewExpensesModal, setViewExpensesModal] = useState();
   const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState() 
@@ -48,8 +49,8 @@ function App() {
                                 setViewExpensesModal(budget.id)
                           }}
                           onEditBudgetClick={() => {
-                            openEditBudgetModal(budget.id)
-                            setShowEditBudgetModal(true)
+                                console.log("budget id in App.js " + budget.id)
+                                setEditBudgetModal(budget.id)
                           }}      
                       >
                       </BudgetCard>
@@ -61,8 +62,8 @@ function App() {
                 handleClose={() => setShowAddBudgetModal(false)}
           />
           <EditBudgetModal
-                show={showEditBudgetModal}
-                handleClose={() => setShowEditBudgetModal(false)}
+                show={editBudgetModal}
+                handleClose={() => setEditBudgetModal()}
           />
           <AddExpenseModal
                 show={showAddExpenseModal}
