@@ -22,7 +22,7 @@ namespace BudgetApp.Controllers
             return Ok(budgets);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("budgetId/{id}")]
         public async Task<IActionResult> GetBudgetById(int id)
         {
             var budget = await _budgeService.GetBudgetByIdAsync(id);

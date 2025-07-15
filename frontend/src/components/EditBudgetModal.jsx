@@ -2,26 +2,21 @@ import { Form, Modal, Button } from "react-bootstrap"
 import { useRef } from "react"
 import { useBudgets } from "../contexts/BudgetContext"
 
-export default function EditBudgetModal({ show, handleClose }) {
-//   const nameRef = useRef();
-//   const maxRef = useRef();
-//   const { addBudget } = useBudgets();
+export default function EditBudgetModal({ show, budgetId, handleClose }) {
+
+const {selectedBudget, getSelectedBudget} = useBudgets();
+
+// if (budgetId != null) {
+//   getSelectedBudget(budgetId);
+// }
+
+// budgetName = selectedBudget.name;
+// budgetMax = selectedBudget.maxAmount;
+
 
   async function handleSubmit(e) {
     e.preventDefault();
 
-    // const newBudget = {
-    //   name: nameRef.current.value,  
-    //   maxAmount: parseFloat(maxRef.current.value),
-    // };
-
-    // try {
-    //   addBudget(newBudget);
-    //   handleClose();     
-    // } 
-    // catch (error) {
-    //   console.error("There was an error adding the budget!", error);
-    // }
   }
 
   return (
