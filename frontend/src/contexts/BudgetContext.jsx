@@ -22,8 +22,9 @@ export const BudgetsProvider = ({ children }) => {
 
     // Get a single budget
     function getBudgetById(budgetId) {
-        axios.get(`http://localhost:5023/api/budget/budgetId/${budgetId}`)
-            .then(response => setSelectedBudget(response.data))
+        return axios
+            .get(`http://localhost:5023/api/budget/budgetId/${budgetId}`)
+            .then(response => response.data)
             .catch(error => console.error("Error fetching selected budget:", error));
     }
 

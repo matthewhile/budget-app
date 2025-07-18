@@ -13,14 +13,22 @@ function App() {
 
   const { allBudgets } = useBudgets();
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false)
-  const [editBudgetModal, setEditBudgetModal] = useState(false)
+  const [showEditBudgetModal, setShowEditBudgetModal] = useState(false);
+
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false)
   const [viewExpensesModal, setViewExpensesModal] = useState();
-  const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState() 
+
+  const [selectedBudgetId, setSelectedBudgetId] = useState() 
 
   function openAddExpenseModal(budgetId) {
       setShowAddExpenseModal(true)
-      setAddExpenseModalBudgetId(budgetId)
+      setSelectedBudgetId(budgetId)
+  }
+
+  function openEditBudgetModal(budgetId) {
+      debugger;
+      setShowEditBudgetModal(true)
+      setSelectedBudgetId(budgetId)
   }
 
 
@@ -40,17 +48,18 @@ function App() {
                           amount={budget.totalSpent}
                           max={budget.maxAmount}     
                           onAddExpenseClick={() => {
-                                console.log("budget id in App.js " + budget.id)
+                                //console.log("budget id in App.js " + budget.id)
                                 openAddExpenseModal(budget.id)
                                 setShowAddExpenseModal(true)
                           }}
                           onViewExpensesClick={() => {
-                                console.log("budget id in App.js " + budget.id)
+                                //console.log("budget id in App.js " + budget.id)
                                 setViewExpensesModal(budget.id)
                           }}
                           onEditBudgetClick={() => {
-                                console.log("budget id in App.js " + budget.id)
-                                setEditBudgetModal(budget.id)
+                                console.log("budget id in onEditBudgetClick " + budget.id)
+                                openEditBudgetModal(budget.id)
+                                setShowEditBudgetModal(true)
                           }}      
                       >
                       </BudgetCard>
@@ -62,12 +71,13 @@ function App() {
                 handleClose={() => setShowAddBudgetModal(false)}
           />
           <EditBudgetModal
-                show={editBudgetModal}
-                handleClose={() => setEditBudgetModal()}
+                show={showEditBudgetModal}
+                budgetId={selectedBudgetId}
+                handleClose={() => setShowEditBudgetModal(false)}
           />
           <AddExpenseModal
                 show={showAddExpenseModal}
-                defaultBudgetId={addExpenseModalBudgetId}
+                defaultBudgetId={selectedBudgetId}
                 handleClose={() => setShowAddExpenseModal(false)}
           />
           <ViewExpensesModal
