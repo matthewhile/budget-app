@@ -9,8 +9,7 @@ export function useBudgets() {
 
 export const BudgetsProvider = ({ children }) => {
     const [allBudgets, setAllBudgets] = useState([]);
-    const [selectedBudget, setSelectedBudget] = useState(null);
-    const [expensesByBudget, setExpensesByBudget] = useState({});
+    const [expensesByBudget, setExpensesByBudget] = useState([]);
 
 
     // Get all budgets
@@ -71,7 +70,6 @@ export const BudgetsProvider = ({ children }) => {
     return (
     <BudgetsContext.Provider value={{
         allBudgets,
-        selectedBudget,
         expensesByBudget,
         getBudgetExpenses,
         getBudgetById,

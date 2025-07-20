@@ -10,14 +10,14 @@ const [selectedBudget, setSelectedBudget] = useState(null);
   // Fetch budget only when modal opens or budgetId changes
   useEffect(() => {
     if (budgetId && show) {
-      getBudgetById(budgetId).then((response) => {
+      getBudgetById(budgetId).then((data) => {
         setSelectedBudget({
-          name: response.name,
-          maxAmount: response.maxAmount
+          name: data.name,
+          maxAmount: data.maxAmount
         })
       })
     }
-  }, [budgetId, show]) // re-fetch if the modal opens for a different budget
+  }, [budgetId, show]) 
 
 
   async function handleSubmit(e) {
@@ -62,9 +62,7 @@ const [selectedBudget, setSelectedBudget] = useState(null);
               step={0.01}
               onChange={(e) =>
                 setSelectedBudget((prev) => ({
-                  ...prev,
-                  maxAmount: parseFloat(e.target.value) || 0,
-                }))
+                  ...prev, maxAmount: parseFloat(e.target.value) || 0 }))
               }
             />
           </Form.Group>

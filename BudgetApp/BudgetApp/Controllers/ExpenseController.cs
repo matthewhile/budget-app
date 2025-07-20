@@ -49,7 +49,7 @@ namespace BudgetApp.Controllers
             if (dto == null) return BadRequest();
             var newExpense = await _expenseService.CreateExpenseAsync(dto);
             var updatedBudget = await _budgetService.GetBudgetByIdAsync((int)newExpense.BudgetId);
-            return CreatedAtAction(nameof(GetExpenseById), new {id = newExpense.Id}, new {newExpense, updatedBudget});
+            return CreatedAtAction(nameof(GetExpenseById), new {id = newExpense.Id}, new {addedExpense = newExpense, updatedBudget});
         }
     }
 }

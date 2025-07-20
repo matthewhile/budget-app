@@ -26,7 +26,6 @@ function App() {
   }
 
   function openEditBudgetModal(budgetId) {
-      debugger;
       setShowEditBudgetModal(true)
       setSelectedBudgetId(budgetId)
   }
@@ -57,7 +56,7 @@ function App() {
                                 setViewExpensesModal(budget.id)
                           }}
                           onEditBudgetClick={() => {
-                                console.log("budget id in onEditBudgetClick " + budget.id)
+                                //console.log("budget id in onEditBudgetClick " + budget.id)
                                 openEditBudgetModal(budget.id)
                                 setShowEditBudgetModal(true)
                           }}      

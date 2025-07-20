@@ -7,13 +7,12 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
 
   const { allBudgets, getBudgetExpenses, expensesByBudget } = useBudgets();
   
-//   const budget = allBudgets.find(b => b.Id === budgetId);
-//   const budgetName = budget ? budget.BudgetName : null;
   useEffect(() => {
-    if (budgetId != null) {
+    if (budgetId != null && !expensesByBudget[budgetId]) {
       getBudgetExpenses(budgetId);
     }
   }, [budgetId]);
+
 
   const expenses = expensesByBudget[budgetId] || [];
   const budget = allBudgets.find(b => b.id === budgetId);
