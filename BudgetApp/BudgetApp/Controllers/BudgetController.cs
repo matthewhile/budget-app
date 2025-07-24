@@ -39,5 +39,13 @@ namespace BudgetApp.Controllers
             var newBudget = await _budgeService.CreateBudgetAsync(dto);
             return CreatedAtAction(nameof(GetBudgetById), new { id = newBudget.Id }, newBudget);
         }
+
+        [HttpPut("budgetId/{id}")]
+        public async Task<IActionResult> UpdateBudget(int id, UpdateBudgetDTO dto)
+        {
+            if (dto == null) return BadRequest();
+            var updatedBudget = await _budgeService.UpdateBudgetAsync(id, dto);
+            return Ok(updatedBudget);
+        }
     }
 }

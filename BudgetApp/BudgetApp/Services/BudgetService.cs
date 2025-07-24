@@ -1,6 +1,7 @@
 ﻿using BudgetApp.Data;
 using BudgetApp.DTOs;
 using BudgetApp.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace BudgetApp.Services
@@ -43,6 +44,31 @@ namespace BudgetApp.Services
                     UserId = b.UserId
                 })
                 .FirstOrDefaultAsync();
+        }
+
+        // TODO: Address nullable budget name + forced to update both name and amount issue.
+        public async Task<BudgetDTO?> UpdateBudgetAsync(int id, UpdateBudgetDTO updateBudgetDto)
+        {
+            var budget = await _context.Budgets.FirstOrDefaultAsync(b => b.Id == id);
+
+            if (budget == null)
+            {
+                return null; 
+            }
+
+            budget.Name = updateBudgetDto.Name;
+            budget.MaxAmount = updateBudgetDto.MaxAmount;
+
+            await _context.SaveChangesAsync();
+
+            return new BudgetDTO
+            {
+                Id = budget.Id,
+                Name = budget.Name,
+                MaxAmount = budget.MaxAmount,
+                //TimePeriodId = budget.TimePeriodId,
+                //UserId = budget.UserId
+            };
         }
 
         public async Task<BudgetDTO> CreateBudgetAsync(AddBudgetDTO dto)
