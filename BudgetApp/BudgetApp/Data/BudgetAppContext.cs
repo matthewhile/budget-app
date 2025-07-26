@@ -20,7 +20,7 @@ public partial class BudgetAppContext : DbContext
 
     public virtual DbSet<Expense> Expenses { get; set; }
 
-    public virtual DbSet<TimePeriod> TimePeriods { get; set; }
+    public virtual DbSet<Timeperiod> TimePeriods { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
@@ -46,7 +46,7 @@ public partial class BudgetAppContext : DbContext
             entity.Property(e => e.TimePeriodId).HasColumnName("time_period_id");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
-            entity.HasOne(d => d.TimePeriod).WithMany(p => p.Budgets)
+            entity.HasOne(d => d.Timeperiod).WithMany(p => p.Budgets)
                 .HasForeignKey(d => d.TimePeriodId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("budgets_time_period_id_fkey");
@@ -84,7 +84,7 @@ public partial class BudgetAppContext : DbContext
                 .HasConstraintName("expenses_user_id_fkey");
         });
 
-        modelBuilder.Entity<TimePeriod>(entity =>
+        modelBuilder.Entity<Timeperiod>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("timeperiods_pkey");
 
@@ -95,7 +95,7 @@ public partial class BudgetAppContext : DbContext
             entity.Property(e => e.UserId).HasColumnName("user_id");
             entity.Property(e => e.Year).HasColumnName("year");
 
-            entity.HasOne(d => d.User).WithMany(p => p.TimePeriods)
+            entity.HasOne(d => d.User).WithMany(p => p.Timeperiods)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("timeperiods_user_id_fkey");
@@ -113,7 +113,7 @@ public partial class BudgetAppContext : DbContext
             entity.Property(e => e.Email)
                 .HasMaxLength(255)
                 .HasColumnName("email");
-            entity.Property(e => e.Password)
+            entity.Property(e => e.PasswordHash)
                 .HasMaxLength(255)
                 .HasColumnName("password_hash");
             entity.Property(e => e.Username)

@@ -7,7 +7,7 @@ public partial class Budget
 {
     public int Id { get; set; }
 
-    public string Name { get; set; } = null!;
+    public string Name { get; set; } = string.Empty;
 
     public decimal MaxAmount { get; set; }
 
@@ -17,7 +17,7 @@ public partial class Budget
 
     public virtual ICollection<Expense> Expenses { get; set; } = new List<Expense>();
 
-    public virtual TimePeriod TimePeriod { get; set; } = null!;
+    public virtual Timeperiod Timeperiod { get; set; } = null!;
 
     public virtual User User { get; set; } = null!;
 }

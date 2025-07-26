@@ -40,7 +40,7 @@ namespace BudgetApp.Controllers
             return CreatedAtAction(nameof(GetBudgetById), new { id = newBudget.Id }, newBudget);
         }
 
-        [HttpPut("budgetId/{id}")]
+        [HttpPatch("budgetId/{id}")]
         public async Task<IActionResult> UpdateBudget(int id, UpdateBudgetDTO dto)
         {
             if (dto == null) return BadRequest();

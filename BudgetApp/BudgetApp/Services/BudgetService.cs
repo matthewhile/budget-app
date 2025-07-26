@@ -51,13 +51,19 @@ namespace BudgetApp.Services
         {
             var budget = await _context.Budgets.FirstOrDefaultAsync(b => b.Id == id);
 
-            if (budget == null)
+            if (budget == null) return null; 
+            
+
+            if (!string.IsNullOrEmpty(updateBudgetDto.Name))
             {
-                return null; 
+                budget.Name = updateBudgetDto.Name;
             }
 
-            budget.Name = updateBudgetDto.Name;
-            budget.MaxAmount = updateBudgetDto.MaxAmount;
+            if (updateBudgetDto.MaxAmount.HasValue)
+            {
+                budget.MaxAmount = updateBudgetDto.MaxAmount.Value;
+            }
+
 
             await _context.SaveChangesAsync();
 
