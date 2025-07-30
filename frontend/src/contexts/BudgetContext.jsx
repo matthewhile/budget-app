@@ -9,7 +9,7 @@ export function useBudgets() {
 
 export const BudgetsProvider = ({ children }) => {
     const [allBudgets, setAllBudgets] = useState([]);
-    const [expensesByBudget, setExpensesByBudget] = useState([]);
+    const [expensesByBudget, setExpensesByBudget] = useState({});
 
 
     // Get all budgets
@@ -19,7 +19,7 @@ export const BudgetsProvider = ({ children }) => {
             .catch(error => console.error("Error fetching budgets:", error));
     }, []);
 
-    // Get a single budget
+    // Get a specified budget
     function getBudgetById(budgetId) {
         return axios
             .get(`http://localhost:5023/api/budget/budgetId/${budgetId}`)
@@ -27,7 +27,7 @@ export const BudgetsProvider = ({ children }) => {
             .catch(error => console.error("Error fetching selected budget:", error));
     }
 
-    // Get a specific budget's expenses
+    // Get a specified budget's expenses
     function getBudgetExpenses(budgetId) {
         axios.get(`http://localhost:5023/api/expense/budgetId/${budgetId}`)
             .then(response => {
@@ -47,6 +47,20 @@ export const BudgetsProvider = ({ children }) => {
                 setAllBudgets(prevBudgets => [...prevBudgets, addedBudget]);
             })
             .catch(error => console.error("Error adding budget:", error));
+    }
+
+    // Update a budget
+    function updateBudget(id, budget) {
+        axios.patch(`http://localhost:5023/api/budget/${id}`, budget)
+            .then(response => {
+                const updatedBudget = response.data;
+                setAllBudgets(prevBudgets =>
+                    prevBudgets.map(budget =>
+                        budget.id === id ? updatedBudget : budget
+                    )                    
+                );
+            })
+            .catch(error => console.error("Error updating budget " + budget.id, error));
     }
 
     // Add a new expense
@@ -74,6 +88,7 @@ export const BudgetsProvider = ({ children }) => {
         getBudgetExpenses,
         getBudgetById,
         addBudget,
+        updateBudget,
         addExpense
     }}>{children}</BudgetsContext.Provider>
   )

@@ -46,10 +46,12 @@ namespace BudgetApp.Services
                 .FirstOrDefaultAsync();
         }
 
-        // TODO: Address nullable budget name + forced to update both name and amount issue.
+
         public async Task<BudgetDTO?> UpdateBudgetAsync(int id, UpdateBudgetDTO updateBudgetDto)
         {
-            var budget = await _context.Budgets.FirstOrDefaultAsync(b => b.Id == id);
+            var budget = await _context.Budgets
+                .Include(b => b.Expenses)
+                .FirstOrDefaultAsync(b => b.Id == id);
 
             if (budget == null) return null; 
             
@@ -64,6 +66,8 @@ namespace BudgetApp.Services
                 budget.MaxAmount = updateBudgetDto.MaxAmount.Value;
             }
 
+            var totalSpent = budget.Expenses.Sum(e => e.Amount);
+
 
             await _context.SaveChangesAsync();
 
@@ -72,6 +76,7 @@ namespace BudgetApp.Services
                 Id = budget.Id,
                 Name = budget.Name,
                 MaxAmount = budget.MaxAmount,
+                TotalSpent = totalSpent
                 //TimePeriodId = budget.TimePeriodId,
                 //UserId = budget.UserId
             };

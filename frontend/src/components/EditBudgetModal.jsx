@@ -4,10 +4,10 @@ import { useBudgets } from "../contexts/BudgetContext"
 
 export default function EditBudgetModal({ show, budgetId, handleClose }) {
 
-const {getBudgetById} = useBudgets();
+const {updateBudget, getBudgetById, getBudgetExpenses} = useBudgets();
 const [selectedBudget, setSelectedBudget] = useState(null);
 
-  // Fetch budget only when modal opens or budgetId changes
+  // Fetch budget data only when modal opens or budgetId changes
   useEffect(() => {
     if (budgetId && show) {
       getBudgetById(budgetId).then((data) => {
@@ -19,11 +19,23 @@ const [selectedBudget, setSelectedBudget] = useState(null);
     }
   }, [budgetId, show]) 
 
-
   async function handleSubmit(e) {
     e.preventDefault();
+  
+    const budget = {
+      name: selectedBudget?.name,
+      maxAmount: selectedBudget?.maxAmount
+    }
 
+    try {
+      updateBudget(budgetId, budget);
+      handleClose();
+    }
+    catch(error) {
+      console.error("There was an error adding the budget!", error);
+    }
   }
+  
 
   return (
     <Modal show={show} onHide={handleClose}>
