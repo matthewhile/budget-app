@@ -43,6 +43,20 @@ namespace BudgetApp.Controllers
             return Ok(expenses);
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteExpense(int id)
+        {
+            try
+            {
+                await _expenseService.DeleteExpenseAsync(id);
+                return Ok("Expense deleted successfully");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }     
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddNewExpense(AddExpenseDTO dto)
         {
