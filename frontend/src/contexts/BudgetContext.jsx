@@ -81,6 +81,17 @@ export const BudgetsProvider = ({ children }) => {
             .catch(error => console.error("Error adding expense:", error));
     }
 
+    function deleteExpense(expense, budgetId) {
+        debugger;
+        axios.delete(`http://localhost:5023/api/expense/${expense.id}`)
+            .then(() => {
+                 setExpensesByBudget(prev => ({
+                    ...prev, [budgetId]: prev[budgetId].filter(e => e.id !== expense.id)
+                }));
+            })
+            .catch(error => console.error("Error deleting expense:", error));
+    }
+
     return (
     <BudgetsContext.Provider value={{
         allBudgets,
@@ -89,7 +100,8 @@ export const BudgetsProvider = ({ children }) => {
         getBudgetById,
         addBudget,
         updateBudget,
-        addExpense
+        addExpense,
+        deleteExpense
     }}>{children}</BudgetsContext.Provider>
   )
 }

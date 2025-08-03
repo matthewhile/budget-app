@@ -5,7 +5,7 @@ import { useEffect } from "react"
 
 export default function ViewExpensesModal({ budgetId, handleClose }) {
 
-  const { allBudgets, getBudgetExpenses, expensesByBudget } = useBudgets();
+  const { allBudgets, getBudgetExpenses, deleteExpense, expensesByBudget } = useBudgets();
   
   useEffect(() => {
     if (budgetId != null && !expensesByBudget[budgetId]) {
@@ -55,13 +55,13 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
                 <div className="fs-5">
                     {currencyFormatter.format(expense.amount)}
                 </div>
-                {/* <Button
-                    onClick={() => deleteExpense(expense)}
+                <Button
+                    onClick={() => deleteExpense(expense, budgetId)}
                     size="sm"
                     variant="outline-danger"
                 >
                     &times;
-                </Button> */}
+                </Button>
                 </Stack>
             ))}
         </Stack>
