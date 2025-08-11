@@ -70,8 +70,7 @@ export const BudgetsProvider = ({ children }) => {
                 const updatedBudget = response.data;
                 //const budgetId = updatedBudget.id;
                 setExpensesByBudget(prev => ({
-                    ...prev,
-                    [updateBudget.id]: updateBudget.expenses
+                    ...prev, [updateBudget.id]: updateBudget.expenses
                 }));
 
                 setAllBudgets(prev => prev.map(b =>
@@ -82,21 +81,21 @@ export const BudgetsProvider = ({ children }) => {
     }
 
     // Delete an expense
-    // function deleteExpense(expense, budgetId) {
-    //     debugger;
-    //     axios.delete(`http://localhost:5023/api/expense/${expense.id}`)
-    //         .then(response => {
-    //             const updatedBudget = response.data;
-    //             setExpensesByBudget(prev => ({
-    //                 ...prev, [budgetId]: prev[budgetId].filter(e => e.id !== expense.id)
-    //             }));
+    function deleteExpense(expense) {
+        axios.delete(`http://localhost:5023/api/expense/${expense.id}`)
+            .then(response => {
+                debugger;
+                const updatedBudget = response.data;
+                setExpensesByBudget(prev => ({
+                    ...prev, [updatedBudget.id]: updatedBudget.expenses
+                }));
 
-    //             setAllBudgets(prev => prev.map(b =>
-    //                 b.id === updatedBudget.id ? updatedBudget : b
-    //             ));
-    //         })
-    //         .catch(error => console.error("Error deleting expense:", error));
-    // }
+                setAllBudgets(prev => prev.map(b =>
+                    b.id === updatedBudget.id ? updatedBudget : b
+                ));
+            })
+            .catch(error => console.error("Error deleting expense:", error));
+    }
 
     return (
     <BudgetsContext.Provider value={{
@@ -107,7 +106,7 @@ export const BudgetsProvider = ({ children }) => {
         addBudget,
         updateBudget,
         addExpense,
-        //deleteExpense
+        deleteExpense
     }}>{children}</BudgetsContext.Provider>
   )
 }

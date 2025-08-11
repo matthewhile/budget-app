@@ -8,13 +8,15 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
   const { allBudgets, getBudgetExpenses, deleteExpense, expensesByBudget } = useBudgets();
   
   useEffect(() => {
-    debugger;
     if (budgetId != null) {
       getBudgetExpenses(budgetId);
     }
   }, [budgetId]);
 
   const expenses = expensesByBudget[budgetId] || [];
+
+  const hasNoExpenses = expenses.length === 0;
+
   const budget = allBudgets.find(b => b.id === budgetId);
   const budgetName = budget ? budget.name : null;
 
@@ -43,6 +45,9 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
       </Modal.Header>
       <Modal.Body>
         <Stack direction="vertical" gap="3">
+          {hasNoExpenses && (
+            <span>No expenses for this budget</span>
+          )}
             {/* <div className="me-auto" gap="2">
                 <span>Name</span>
                 <span>Date</span>
@@ -56,7 +61,7 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
                     {currencyFormatter.format(expense.amount)}
                 </div>
                 <Button
-                    onClick={() => deleteExpense(expense, budgetId)}
+                    onClick={() => deleteExpense(expense)}
                     size="sm"
                     variant="outline-danger"
                 >
