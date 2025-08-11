@@ -59,17 +59,17 @@ namespace BudgetApp.Services
                 .ToListAsync();
         }
 
-        // Delete an expense
-        public async Task DeleteExpenseAsync(int id)
-        {
-            var expense = await _context.Expenses.FirstOrDefaultAsync(e => e.Id == id);
+        //// Delete an expense
+        //public async Task DeleteExpenseAsync(int id)
+        //{
+        //    var expense = await _context.Expenses.FirstOrDefaultAsync(e => e.Id == id);
 
-            if (expense == null)
-                throw new KeyNotFoundException();
+        //    if (expense == null)
+        //        throw new KeyNotFoundException();
 
-            _context.Expenses.Remove(expense); 
-            await _context.SaveChangesAsync();
-        }
+        //    _context.Expenses.Remove(expense); 
+        //    await _context.SaveChangesAsync();
+        //}
 
         // Create a new expense
         public async Task<ExpenseDTO> CreateExpenseAsync(AddExpenseDTO dto)

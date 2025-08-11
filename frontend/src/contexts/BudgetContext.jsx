@@ -67,11 +67,11 @@ export const BudgetsProvider = ({ children }) => {
     function addExpense(newExpense) {
         axios.post("http://localhost:5023/api/expense", newExpense)
             .then(response => {
-                const { addedExpense, updatedBudget } = response.data;
-                const budgetId = updatedBudget.id;
+                const updatedBudget = response.data;
+                //const budgetId = updatedBudget.id;
                 setExpensesByBudget(prev => ({
                     ...prev,
-                    [budgetId]: [...(prev[budgetId] || []), addedExpense]
+                    [updateBudget.id]: updateBudget.expenses
                 }));
 
                 setAllBudgets(prev => prev.map(b =>
@@ -81,16 +81,22 @@ export const BudgetsProvider = ({ children }) => {
             .catch(error => console.error("Error adding expense:", error));
     }
 
-    function deleteExpense(expense, budgetId) {
-        debugger;
-        axios.delete(`http://localhost:5023/api/expense/${expense.id}`)
-            .then(() => {
-                 setExpensesByBudget(prev => ({
-                    ...prev, [budgetId]: prev[budgetId].filter(e => e.id !== expense.id)
-                }));
-            })
-            .catch(error => console.error("Error deleting expense:", error));
-    }
+    // Delete an expense
+    // function deleteExpense(expense, budgetId) {
+    //     debugger;
+    //     axios.delete(`http://localhost:5023/api/expense/${expense.id}`)
+    //         .then(response => {
+    //             const updatedBudget = response.data;
+    //             setExpensesByBudget(prev => ({
+    //                 ...prev, [budgetId]: prev[budgetId].filter(e => e.id !== expense.id)
+    //             }));
+
+    //             setAllBudgets(prev => prev.map(b =>
+    //                 b.id === updatedBudget.id ? updatedBudget : b
+    //             ));
+    //         })
+    //         .catch(error => console.error("Error deleting expense:", error));
+    // }
 
     return (
     <BudgetsContext.Provider value={{
@@ -101,7 +107,7 @@ export const BudgetsProvider = ({ children }) => {
         addBudget,
         updateBudget,
         addExpense,
-        deleteExpense
+        //deleteExpense
     }}>{children}</BudgetsContext.Provider>
   )
 }

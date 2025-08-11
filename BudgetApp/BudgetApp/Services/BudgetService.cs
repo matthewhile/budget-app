@@ -30,21 +30,33 @@ namespace BudgetApp.Services
                 .ToListAsync();
         }
 
-        public async Task<BudgetDTO?> GetBudgetByIdAsync(int id)
+        public async Task<BudgetDTO> GetBudgetByIdAsync(int id)
         {
-            return await _context.Budgets
-                .Where(b => b.Id == id)
-                .Select(b => new BudgetDTO
+            var budget = await _context.Budgets
+                .Include(b => b.Expenses)
+                .FirstOrDefaultAsync(b => b.Id == id);
+
+            if (budget == null) return null;
+
+            return new BudgetDTO
+            {
+                Id = budget.Id,
+                Name = budget.Name,
+                MaxAmount = budget.MaxAmount,
+                TimePeriodId = budget.TimePeriodId,
+                UserId = budget.UserId,
+                TotalSpent = budget.Expenses.Sum(e => e.Amount),
+                Expenses = budget.Expenses.Select(e => new ExpenseDTO
                 {
-                    Id = b.Id,
-                    Name = b.Name,
-                    MaxAmount = b.MaxAmount,
-                    TotalSpent = b.Expenses.Sum(e => e.Amount),
-                    TimePeriodId = b.TimePeriodId,
-                    UserId = b.UserId
-                })
-                .FirstOrDefaultAsync();
+                    Id = e.Id,
+                    Description = e.Description,
+                    Amount = e.Amount,
+                    Date = e.Date,
+                    BudgetId = e.BudgetId
+                }).ToList()
+            };
         }
+
 
         public async Task<BudgetDTO> CreateBudgetAsync(AddBudgetDTO dto)
         {

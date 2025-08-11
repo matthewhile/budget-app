@@ -15,5 +15,7 @@ namespace BudgetApp.DTOs
         public int UserId { get; set; }
 
         public decimal TotalSpent { get; set; }
+
+        public List<ExpenseDTO> Expenses { get; set; } = new();
     }
 }

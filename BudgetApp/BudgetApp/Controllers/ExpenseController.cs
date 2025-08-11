@@ -43,19 +43,24 @@ namespace BudgetApp.Controllers
             return Ok(expenses);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteExpense(int id)
-        {
-            try
-            {
-                await _expenseService.DeleteExpenseAsync(id);
-                return Ok("Expense deleted successfully");
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(new { message = ex.Message });
-            }     
-        }
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteExpense(int id)
+        //{
+        //    try
+        //    {
+        //        var deletedExpense = await _expenseService.GetExpenseByIdAsync(id);
+
+        //        int? budgetId = deletedExpense.BudgetId;
+        //        var updatedBudget = _budgetService.GetBudgetByIdAsync(budgetId.Value);
+        //        await _expenseService.DeleteExpenseAsync(id);
+        //        return Ok(new { updatedBudget });
+                
+        //    }
+        //    catch (KeyNotFoundException ex)
+        //    {
+        //        return NotFound(new { message = ex.Message });
+        //    }     
+        //}
 
         [HttpPost]
         public async Task<IActionResult> AddNewExpense(AddExpenseDTO dto)
@@ -63,7 +68,7 @@ namespace BudgetApp.Controllers
             if (dto == null) return BadRequest();
             var newExpense = await _expenseService.CreateExpenseAsync(dto);
             var updatedBudget = await _budgetService.GetBudgetByIdAsync((int)newExpense.BudgetId);
-            return CreatedAtAction(nameof(GetExpenseById), new {id = newExpense.Id}, new {addedExpense = newExpense, updatedBudget});
+            return Ok(updatedBudget);
         }
     }
 }
