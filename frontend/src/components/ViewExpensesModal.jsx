@@ -8,11 +8,11 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
   const { allBudgets, getBudgetExpenses, deleteExpense, expensesByBudget } = useBudgets();
   
   useEffect(() => {
-    if (budgetId != null && !expensesByBudget[budgetId]) {
+    debugger;
+    if (budgetId != null) {
       getBudgetExpenses(budgetId);
     }
   }, [budgetId]);
-
 
   const expenses = expensesByBudget[budgetId] || [];
   const budget = allBudgets.find(b => b.id === budgetId);

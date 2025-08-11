@@ -45,20 +45,6 @@ namespace BudgetApp.Services
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<List<ExpenseDTO>> GetBudgetExpensesAsync(int id)
-        {
-            return await _context.Expenses
-                .Where(e => e.BudgetId == id)
-                .Select(e => new ExpenseDTO
-                {
-                    Id = e.Id,
-                    Description = e.Description,
-                    Amount = e.Amount,
-                    Date = e.Date,
-                })
-                .ToListAsync();
-        }
-
         //// Delete an expense
         //public async Task DeleteExpenseAsync(int id)
         //{

@@ -35,12 +35,12 @@ namespace BudgetApp.Controllers
         [HttpGet("budgetId/{id}")]
         public async Task<IActionResult> GetBudgetExpenses(int id)
         {
-            var expenses = await _expenseService.GetBudgetExpensesAsync(id);
-            if (expenses == null)
+            var budget = await _budgetService.GetBudgetByIdAsync(id);
+            if (budget == null)
             {
                 return NotFound();
             }
-            return Ok(expenses);
+            return Ok(budget.Expenses);
         }
 
         //[HttpDelete("{id}")]
@@ -54,7 +54,7 @@ namespace BudgetApp.Controllers
         //        var updatedBudget = _budgetService.GetBudgetByIdAsync(budgetId.Value);
         //        await _expenseService.DeleteExpenseAsync(id);
         //        return Ok(new { updatedBudget });
-                
+
         //    }
         //    catch (KeyNotFoundException ex)
         //    {
