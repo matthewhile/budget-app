@@ -10,7 +10,7 @@
 
         public DateOnly Date { get; set; }
 
-        public int? BudgetId { get; set; }
+        public int BudgetId { get; set; }
 
         public int UserId { get; set; }
     }
