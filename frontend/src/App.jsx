@@ -2,11 +2,12 @@ import './App.css'
 import { useState } from 'react';
 import { Container, Stack, Button } from 'react-bootstrap';
 import BudgetCard from './components/BudgetCard';
+import UncategorizedBudgetCard from "./components/UncategorizedBudgetCard";
 import ViewExpensesModal from "./components/ViewExpensesModal";
 import AddBudgetModal from "./components/AddBudgetModal";
 import AddExpenseModal from "./components/AddExpenseModal";
 import EditBudgetModal from "./components/EditBudgetModal"
-import { useBudgets } from './contexts/BudgetContext';
+import { UNCATEGORIZED_BUDGET_ID,useBudgets } from './contexts/BudgetContext';
 
 
 function App() {
@@ -40,8 +41,9 @@ function App() {
                   <Button variant="outline-primary" onClick={() => setShowAddExpenseModal(true)}>Add Expense</Button>
               </Stack>
               <div className="budgetCards">
-                  {allBudgets.map(budget => (
-                      <BudgetCard
+                  {allBudgets.map(budget => 
+                     budget.id !== UNCATEGORIZED_BUDGET_ID ? (
+                         <BudgetCard
                           key={budget.id} 
                           name={budget.name}      
                           amount={budget.totalSpent}
@@ -62,7 +64,14 @@ function App() {
                           }}      
                       >
                       </BudgetCard>
-                  ))}                 
+                    ) : null   
+                  )}
+                  <UncategorizedBudgetCard
+                    onAddExpenseClick={openAddExpenseModal}
+                    onViewExpensesClick={() =>
+                        setViewExpensesModalBudgetId(UNCATEGORIZED_BUDGET_ID)
+                    }
+                />                 
               </div>
           </Container>
           <AddBudgetModal

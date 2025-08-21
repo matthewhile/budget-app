@@ -3,6 +3,8 @@ import axios from "axios";
 
 const BudgetsContext = React.createContext()
 
+export const UNCATEGORIZED_BUDGET_ID = 1;
+
 export function useBudgets() {
     return useContext(BudgetsContext)
 }
