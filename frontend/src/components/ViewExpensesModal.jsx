@@ -1,5 +1,5 @@
 import { Modal, Button, Stack } from "react-bootstrap"
-import { useBudgets } from "../contexts/BudgetContext"
+import { UNCATEGORIZED_BUDGET_ID, useBudgets } from "../contexts/BudgetContext"
 import { currencyFormatter } from "../utils"
 import { useEffect } from "react"
 
@@ -16,6 +16,10 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
   const expenses = expensesByBudget[budgetId] || [];
 
   const hasNoExpenses = expenses.length === 0;
+  
+  // const budget = UNCATEGORIZED_BUDGET_ID === budgetId 
+  //   ? { name: "Uncategorized", id: UNCATEGORIZED_BUDGET_ID }
+  //   : allBudgets.find(b => b.id === budgetId)
 
   const budget = allBudgets.find(b => b.id === budgetId);
   const budgetName = budget ? budget.name : null;

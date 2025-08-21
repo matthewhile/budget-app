@@ -4,9 +4,6 @@ import '../App.css'
 import { FaEllipsisVertical } from "react-icons/fa6";
 
 
-
-
-
 export default function BudgetCard({ 
     name, 
     amount, 

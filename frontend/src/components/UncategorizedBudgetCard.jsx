@@ -11,13 +11,13 @@ export default function UncategorizedBudgetCard(props) {
     }
     }, [UNCATEGORIZED_BUDGET_ID]);
 
+    // TODO: Because of how amount is calculated, it will not dynamically update when new expenses are added but does dynamically update when expenses are deleted.
     const expenses = expensesByBudget[UNCATEGORIZED_BUDGET_ID] || [];
-    // const amount = getBudgetExpenses(UNCATEGORIZED_BUDGET_ID).reduce(
-    //     (total, expense) => total + expense.amount, 0
-    // )
-    // if (amount === 0) return null
+    const amount = expenses.reduce((total, expense) => total + expense.amount, 0);
 
-    return <BudgetCard amount={expenses.amount} name="Uncategorized" gray {...props} />
+    //if (amount === 0) return null
+
+    return <BudgetCard amount={amount} name="Uncategorized" gray {...props} />
 }
 
 
