@@ -57,6 +57,26 @@ namespace BudgetApp.Services
             };
         }
 
+        public async Task DeleteBudgetAsync(int id)
+        {
+            var budget = await _context.Budgets
+               .Include(b => b.Expenses)
+               .FirstOrDefaultAsync(b => b.Id == id);
+
+            if (budget == null)
+                throw new KeyNotFoundException();
+
+            var expenses = budget.Expenses;
+            foreach (var expense in expenses)
+            {
+                expense.BudgetId = 1;
+            }
+
+            _context.Budgets.Remove(budget);
+            await _context.SaveChangesAsync();
+
+        }
+
 
         public async Task<BudgetDTO> CreateBudgetAsync(AddBudgetDTO dto)
         {

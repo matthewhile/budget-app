@@ -47,5 +47,19 @@ namespace BudgetApp.Controllers
             var updatedBudget = await _budgeService.UpdateBudgetAsync(id, dto);
             return Ok(updatedBudget);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBudget(int id)
+        {
+            try
+            {
+                await _budgeService.DeleteBudgetAsync(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
