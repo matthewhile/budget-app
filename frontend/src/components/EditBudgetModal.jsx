@@ -4,7 +4,7 @@ import { useBudgets } from "../contexts/BudgetContext"
 
 export default function EditBudgetModal({ show, budgetId, handleClose }) {
 
-const {updateBudget, getBudgetById, getBudgetExpenses} = useBudgets();
+const {updateBudget, getBudgetById, deleteBudget} = useBudgets();
 const [selectedBudget, setSelectedBudget] = useState(null);
 
   // Fetch budget data only when modal opens or budgetId changes
@@ -78,10 +78,21 @@ const [selectedBudget, setSelectedBudget] = useState(null);
               }
             />
           </Form.Group>
+            <div className="d-flex justify-content-between">
+              <Button
+                onClick={() => {
+                  deleteBudget(budgetId)
+                  handleClose()
+                }}
+                variant="outline-danger"
+              >
+                Delete Budget     
+              </Button>
 
-          <div className="d-flex justify-content-end">
-            <Button variant="primary" type="submit">Save</Button>
-          </div>
+              <Button variant="primary" type="submit">
+                Save
+              </Button>
+            </div>
         </Modal.Body>
       </Form>
     </Modal>
