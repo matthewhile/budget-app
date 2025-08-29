@@ -11,7 +11,6 @@ export default function UncategorizedBudgetCard(props) {
     }
     }, [UNCATEGORIZED_BUDGET_ID]);
 
-    // TODO: Because of how amount is calculated, it will not dynamically update when new expenses are added but does dynamically update when expenses are deleted.
     const expenses = expensesByBudget[UNCATEGORIZED_BUDGET_ID] || [];
     const amount = expenses.reduce((total, expense) => total + expense.amount, 0);
 

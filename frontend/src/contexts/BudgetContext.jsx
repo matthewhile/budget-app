@@ -69,8 +69,9 @@ export const BudgetsProvider = ({ children }) => {
         axios.delete(`http://localhost:5023/api/budget/${id}`)
             .then(() => {
                 setAllBudgets(prev => prev.filter(b => b.id !== id));
+                getBudgetExpenses(UNCATEGORIZED_BUDGET_ID);
                 })
-            .catch(error => console.error(error));
+            .catch(error => console.error("Error deleting budget:", error));
     }
 
 
@@ -79,9 +80,8 @@ export const BudgetsProvider = ({ children }) => {
         axios.post("http://localhost:5023/api/expense", newExpense)
             .then(response => {
                 const updatedBudget = response.data;
-                //const budgetId = updatedBudget.id;
                 setExpensesByBudget(prev => ({
-                    ...prev, [updateBudget.id]: updateBudget.expenses
+                    ...prev, [updatedBudget.id]: updatedBudget.expenses
                 }));
 
                 setAllBudgets(prev => prev.map(b =>
@@ -95,7 +95,6 @@ export const BudgetsProvider = ({ children }) => {
     function deleteExpense(expense) {
         axios.delete(`http://localhost:5023/api/expense/${expense.id}`)
             .then(response => {
-                debugger;
                 const updatedBudget = response.data;
                 setExpensesByBudget(prev => ({
                     ...prev, [updatedBudget.id]: updatedBudget.expenses
