@@ -41,7 +41,7 @@ const [selectedBudget, setSelectedBudget] = useState(null);
     <Modal show={show} onHide={handleClose}>
       <Form onSubmit={handleSubmit}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Budget</Modal.Title>
+          <Modal.Title>Edit Budget - {selectedBudget?.name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form.Group className="mb-3" controlId="name">
@@ -70,8 +70,8 @@ const [selectedBudget, setSelectedBudget] = useState(null);
               value={selectedBudget?.maxAmount ?? 0}
               type="number"
               required
-              min={0}
-              step={0.01}
+              min={1}
+              step={1}
               onChange={(e) =>
                 setSelectedBudget((prev) => ({
                   ...prev, maxAmount: parseFloat(e.target.value) || 0 }))

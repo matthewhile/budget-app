@@ -7,6 +7,7 @@ import ViewExpensesModal from "./components/ViewExpensesModal";
 import AddBudgetModal from "./components/AddBudgetModal";
 import AddExpenseModal from "./components/AddExpenseModal";
 import EditBudgetModal from "./components/EditBudgetModal"
+import TotalBudgetCard from "./components/TotalBudgetCard"
 import { UNCATEGORIZED_BUDGET_ID, useBudgets } from './contexts/BudgetContext';
 
 
@@ -71,7 +72,8 @@ function App() {
                     onViewExpensesClick={() =>
                         setViewExpensesModal(UNCATEGORIZED_BUDGET_ID)
                     }
-                 />                 
+                 /> 
+                 <TotalBudgetCard/>                
               </div>
           </Container>
           <AddBudgetModal
