@@ -1,12 +1,15 @@
 import { Form, Modal, Button } from "react-bootstrap"
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import { useBudgets} from "../contexts/BudgetContext"
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css"
 
 export default function AddExpenseModal({ show, handleClose, defaultBudgetId }) {
   const descriptionRef = useRef()
   const amountRef = useRef()
-  const dateRef = useRef()
   const budgetIdRef = useRef()
+
+  const [selectedDate, setSelectedDate] = useState(new Date())
   const { addExpense, allBudgets } = useBudgets();
   
   async function handleSubmit(e) {
@@ -14,7 +17,7 @@ export default function AddExpenseModal({ show, handleClose, defaultBudgetId }) 
     const newExpense = {
       description: descriptionRef.current.value,
       amount: parseFloat(amountRef.current.value),
-      date: dateRef.current.value,
+      date: selectedDate.toISOString().split("T")[0],
       budgetId: budgetIdRef.current.value
     }
 
@@ -45,12 +48,18 @@ export default function AddExpenseModal({ show, handleClose, defaultBudgetId }) 
           </Form.Group>
           <Form.Group className="mb-3" controlId="date">
             <Form.Label>Date</Form.Label>
-            <Form.Control ref={dateRef} type="text" required />
+            <div className="datepicker-wrapper">
+              <DatePicker
+                selected={selectedDate}
+                onChange={(date) => setSelectedDate(date)}
+                className="form-control"
+                required
+              />
+            </div>
           </Form.Group>
           <Form.Group className="mb-3" controlId="budgetId">
             <Form.Label>Budget</Form.Label>
             <Form.Select defaultValue={defaultBudgetId} ref={budgetIdRef}>
-                {/* <option id={UNCATEGORIZED_BUDGET_ID}>Uncategorized</option> */}
                 {allBudgets.map((budget)=> (
                     <option key={budget.id} value={budget.id}>
                       {budget.name}
