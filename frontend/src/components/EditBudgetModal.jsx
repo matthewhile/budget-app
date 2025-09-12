@@ -24,7 +24,7 @@ const [selectedBudget, setSelectedBudget] = useState(null);
   
     const budget = {
       name: selectedBudget?.name,
-      maxAmount: selectedBudget?.maxAmount
+      maxAmount: selectedBudget?.maxAmount ?? 0
     }
 
     try {
@@ -67,14 +67,14 @@ const [selectedBudget, setSelectedBudget] = useState(null);
           <Form.Group className="mb-3" controlId="max">
             <Form.Label>Maximum Spending</Form.Label>
             <Form.Control
-              value={selectedBudget?.maxAmount ?? 0}
+              value={selectedBudget?.maxAmount}
               type="number"
               required
               min={1}
               step={1}
               onChange={(e) =>
                 setSelectedBudget((prev) => ({
-                  ...prev, maxAmount: parseFloat(e.target.value) || 0 }))
+                  ...prev, maxAmount: parseFloat(e.target.value)}))
               }
             />
           </Form.Group>

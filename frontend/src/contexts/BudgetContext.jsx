@@ -65,6 +65,7 @@ export const BudgetsProvider = ({ children }) => {
             .catch(error => console.error("Error updating budget " + budget.id, error));
     }
 
+    // Delete a budget
     function deleteBudget(id) {
         axios.delete(`http://localhost:5023/api/budget/${id}`)
             .then(() => {

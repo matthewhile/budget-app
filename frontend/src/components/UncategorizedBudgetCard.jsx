@@ -14,7 +14,7 @@ export default function UncategorizedBudgetCard(props) {
     const expenses = expensesByBudget[UNCATEGORIZED_BUDGET_ID] || [];
     const amount = expenses.reduce((total, expense) => total + expense.amount, 0);
 
-    //if (amount === 0) return null
+    if (amount === 0) return null
 
     return <BudgetCard amount={amount} name="Uncategorized" gray {...props} />
 }

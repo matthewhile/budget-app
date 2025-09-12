@@ -23,9 +23,11 @@ export default function BudgetCard({
 
   return (
     <Card className={classNames.join(" ")}>
-      <button className="editBudgetBtn" onClick={onEditBudgetClick}>
-        <FaEllipsisVertical size={20} />
-      </button>
+      {name.toLowerCase() !== "uncategorized" && name.toLowerCase() !== "total" && (
+        <button className="editBudgetBtn" onClick={onEditBudgetClick}>
+          <FaEllipsisVertical size={20} />
+        </button>
+      )}
         <Card.Body>
             <Card.Title className="d-flex justify-content-between align-items-baseline fw-normal mb-3">
                <div className="me-2">{name}</div> 
@@ -49,14 +51,17 @@ export default function BudgetCard({
             )}        
             {!hideButtons && (
                 <Stack direction="horizontal" gap="5" className="mt-4">
-                  <Button 
+                  <Button
                       variant={getAddBtnColor(amount, max)}
-                      className="ms-auto" 
+                      className="ms-auto text-nowrap" 
                       onClick={onAddExpenseClick}
                   >
                       Add Expense
                   </Button>
-                  <Button  variant="outline-secondary" onClick={onViewExpensesClick}
+                  <Button 
+                      variant="outline-secondary" 
+                      className="ms-auto text-nowrap"
+                      onClick={onViewExpensesClick}                      
                   >
                       View Expenses
                   </Button>
@@ -76,6 +81,7 @@ function getProgressBarColor(amount, max) {
 
 function getAddBtnColor(amount, max) {
   const ratio = amount / max
+  if (max == null) return "outline-primary"
   if (ratio < 0.5) return "outline-success"
   if (ratio < 0.75) return "outline-warning"
   return "outline-danger"
