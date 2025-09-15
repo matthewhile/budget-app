@@ -1,5 +1,5 @@
 import { Form, Modal, Button } from "react-bootstrap"
-import { useRef, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useBudgets } from "../contexts/BudgetContext"
 
 export default function EditBudgetModal({ show, budgetId, handleClose }) {
@@ -7,7 +7,7 @@ export default function EditBudgetModal({ show, budgetId, handleClose }) {
 const {updateBudget, getBudgetById, deleteBudget} = useBudgets();
 const [selectedBudget, setSelectedBudget] = useState(null);
 
-  // Fetch budget data only when modal opens or budgetId changes
+  // Fetch existing budget data only when modal opens or budgetId changes
   useEffect(() => {
     if (budgetId && show) {
       getBudgetById(budgetId).then((data) => {
@@ -27,16 +27,10 @@ const [selectedBudget, setSelectedBudget] = useState(null);
       maxAmount: selectedBudget?.maxAmount ?? 0
     }
 
-    try {
-      updateBudget(budgetId, budget);
-      handleClose();
-    }
-    catch(error) {
-      console.error("There was an error adding the budget!", error);
-    }
+    updateBudget(budgetId, budget);
+    handleClose();
   }
   
-
   return (
     <Modal show={show} onHide={handleClose}>
       <Form onSubmit={handleSubmit}>
@@ -44,14 +38,6 @@ const [selectedBudget, setSelectedBudget] = useState(null);
           <Modal.Title>Edit Budget - {selectedBudget?.name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {/* <Form.Group className="mb-3" controlId="name">
-            <Form.Label>Name</Form.Label>
-            <Form.Control value={selectedBudget?.name ?? ""} type="text" required />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="max">
-            <Form.Label>Maximum Spending</Form.Label>
-            <Form.Control  value={selectedBudget?.maxAmount ?? 0} type="number" required min={0} step={0.01}/>
-          </Form.Group> */}
           <Form.Group className="mb-3" controlId="name">
             <Form.Label>Name</Form.Label>
             <Form.Control

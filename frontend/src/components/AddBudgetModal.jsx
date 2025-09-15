@@ -15,13 +15,8 @@ export default function AddBudgetModal({ show, handleClose }) {
       maxAmount: parseFloat(maxRef.current.value),
     };
 
-    try {
-      addBudget(newBudget);
-      handleClose();     
-    } 
-    catch (error) {
-      console.error("There was an error adding the budget!", error);
-    }
+    addBudget(newBudget);
+    handleClose();     
   }
 
   return (

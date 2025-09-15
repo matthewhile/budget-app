@@ -1,7 +1,8 @@
 import { Modal, Button, Stack } from "react-bootstrap"
-import { UNCATEGORIZED_BUDGET_ID, useBudgets } from "../contexts/BudgetContext"
+import { useBudgets } from "../contexts/BudgetContext"
 import { currencyFormatter } from "../utils"
 import { useEffect } from "react"
+import { formatDate } from "../utils"
 
 export default function ViewExpensesModal({ budgetId, handleClose }) {
 
@@ -16,11 +17,6 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
   const expenses = expensesByBudget[budgetId] || [];
 
   const hasNoExpenses = expenses.length === 0;
-  
-  // const budget = UNCATEGORIZED_BUDGET_ID === budgetId 
-  //   ? { name: "Uncategorized", id: UNCATEGORIZED_BUDGET_ID }
-  //   : allBudgets.find(b => b.id === budgetId)
-
   const budget = allBudgets.find(b => b.id === budgetId);
   const budgetName = budget ? budget.name : null;
 
@@ -29,21 +25,7 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
       <Modal.Header closeButton>
         <Modal.Title>
           <Stack direction="horizontal" gap="2">
-            
-            <div>Expenses - {budgetName} 
-            </div>
-            {/* {budgetId !== UNCATEGORIZED_BUDGET_ID && (
-              <Button
-                onClick={() => {
-                  deleteBudget(budget)
-                  handleClose()
-                }}
-                variant="outline-danger"
-                className="ms-5" 
-              >
-                Delete Budget     
-              </Button>
-            )} */}
+            <div>Expenses - {budgetName} </div>
           </Stack>
         </Modal.Title>
       </Modal.Header>
@@ -60,7 +42,7 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
             {expenses.map(expense => (
                 <Stack direction="horizontal" gap="2" key={expense.id}>
                 <div className="me-auto fs-4">{expense.description}</div>
-                <div className="me-fixed fs-5">{expense.date}</div>
+                <div className="me-fixed fs-5">{formatDate(expense.date)}</div>
                 <div className="fs-5">
                     {currencyFormatter.format(expense.amount)}
                 </div>
