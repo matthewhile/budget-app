@@ -7,9 +7,9 @@ namespace BudgetApp.Services
 {
     public class ExpenseService
     {
-        private readonly BudgetAppContext _context;
+        private readonly BudgetAppDbContext _context;
 
-        public ExpenseService(BudgetAppContext context)
+        public ExpenseService(BudgetAppDbContext context)
         {
             _context = context;
         }
@@ -66,7 +66,7 @@ namespace BudgetApp.Services
                 Amount = dto.Amount,
                 Date = dto.Date,
                 BudgetId = dto.BudgetId,
-                UserId = 1
+                UserId = dto.UserId
             };
 
             _context.Expenses.Add(expense);

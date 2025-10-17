@@ -23,7 +23,7 @@ public class Budget
     public virtual Timeperiod Timeperiod { get; set; } = null!;
 
     [Required]
-    public int UserId { get; set; }
+    public string UserId { get; set; } = string.Empty;
 
     [ForeignKey(nameof(UserId))]
     public virtual User User { get; set; } = null!;

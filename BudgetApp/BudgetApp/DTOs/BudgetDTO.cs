@@ -12,7 +12,7 @@ namespace BudgetApp.DTOs
 
         public int TimePeriodId { get; set; }
 
-        public int UserId { get; set; }
+        public string UserId { get; set; } = string.Empty;
 
         public decimal TotalSpent { get; set; }
 
