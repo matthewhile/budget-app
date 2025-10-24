@@ -6,7 +6,6 @@ using BudgetApp.Models;
 using BudgetApp.Extensions;
 
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add PostgreSQL db context 
@@ -18,12 +17,8 @@ builder.Services.AddScoped<ExpenseService>();
 
 builder.Services.AddAuthorization();
 
-//builder.Services.AddAuthentication().AddCookie(IdentityConstants.ApplicationScheme);
-
-builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
-    .AddIdentityCookies();
-
-
+// Use Bearer tokens for authentication
+builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
 
 builder.Services.AddIdentityCore<User>()
     .AddEntityFrameworkStores<BudgetAppDbContext>()
@@ -56,8 +51,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseCors("AllowFrontend");
 

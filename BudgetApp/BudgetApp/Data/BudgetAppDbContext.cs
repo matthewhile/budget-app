@@ -15,14 +15,4 @@ public class BudgetAppDbContext : IdentityDbContext<User>
     public DbSet<Budget> Budgets { get; set; }
     public DbSet<Expense> Expenses { get; set; }
     public DbSet<Timeperiod> TimePeriods { get; set; }
-
-    //protected override void OnModelCreating(ModelBuilder modelBuilder)
-    //{
-    //    // Unique index on User.Email 
-    //    modelBuilder.Entity<User>()
-    //        .HasIndex(u => u.Email)
-    //        .IsUnique();
-
-    //    base.OnModelCreating(modelBuilder);
-    //}
 }

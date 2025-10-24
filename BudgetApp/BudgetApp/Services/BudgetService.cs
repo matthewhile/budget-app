@@ -15,6 +15,7 @@ namespace BudgetApp.Services
             _context = context;
         }
 
+        // Return all budgets
         public async Task<List<BudgetDTO>> GetAllBudgetsAsync()
         {
             return await _context.Budgets
@@ -30,6 +31,7 @@ namespace BudgetApp.Services
                 .ToListAsync();
         }
 
+        // Return a specified budget and the expenses assigned to it
         public async Task<BudgetDTO> GetBudgetByIdAsync(int id)
         {
             var budget = await _context.Budgets
@@ -57,6 +59,7 @@ namespace BudgetApp.Services
             };
         }
 
+        // Delete a specified budget
         public async Task DeleteBudgetAsync(int id)
         {
             var budget = await _context.Budgets
@@ -77,7 +80,7 @@ namespace BudgetApp.Services
 
         }
 
-
+        // Create a new budget
         public async Task<BudgetDTO> CreateBudgetAsync(AddBudgetDTO dto)
         {
             var budget = new Budget
@@ -102,7 +105,7 @@ namespace BudgetApp.Services
             };
         }
 
-
+        // Update/edit a budget
         public async Task<BudgetDTO?> UpdateBudgetAsync(int id, UpdateBudgetDTO updateBudgetDto)
         {
             var budget = await _context.Budgets
@@ -110,7 +113,6 @@ namespace BudgetApp.Services
                 .FirstOrDefaultAsync(b => b.Id == id);
 
             if (budget == null) return null; 
-            
 
             if (!string.IsNullOrEmpty(updateBudgetDto.Name))
             {
