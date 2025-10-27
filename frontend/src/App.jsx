@@ -1,101 +1,17 @@
-import './index.css'
-import { useState } from 'react';
-import { Container, Stack, Button } from 'react-bootstrap';
-import BudgetCard from './components/BudgetCard';
-import UncategorizedBudgetCard from "./components/UncategorizedBudgetCard";
-import ViewExpensesModal from "./components/ViewExpensesModal";
-import AddBudgetModal from "./components/AddBudgetModal";
-import AddExpenseModal from "./components/AddExpenseModal";
-import EditBudgetModal from "./components/EditBudgetModal"
-import TotalBudgetCard from "./components/TotalBudgetCard"
-import { UNCATEGORIZED_BUDGET_ID, useBudgets } from './contexts/BudgetContext';
-
+import { useAuth } from "./contexts/AuthContext.jsx"
+import Login from "./pages/Login"
+import Dashboard from "./pages/Dashboard"
 
 function App() {
+  const { isAuthenticated } = useAuth()
 
-  const { allBudgets } = useBudgets();
-  const [showAddBudgetModal, setShowAddBudgetModal] = useState(false)
-  const [showEditBudgetModal, setShowEditBudgetModal] = useState(false);
-
-  const [showAddExpenseModal, setShowAddExpenseModal] = useState(false)
-  const [viewExpensesModal, setViewExpensesModal] = useState();
-
-  const [selectedBudgetId, setSelectedBudgetId] = useState() 
-
-  function openAddExpenseModal(budgetId) {
-      setShowAddExpenseModal(true)
-      setSelectedBudgetId(budgetId)
+  // show login if user is not authenticated
+  if (!isAuthenticated) {
+    return <Login />
   }
 
-  function openEditBudgetModal(budgetId) {
-      setShowEditBudgetModal(true)
-      setSelectedBudgetId(budgetId)
-  }
-
-
-  return (
-      <>
-          <Container className="my-4">
-              <Stack direction="horizontal" gap="2" className="mb-4">
-                      <h1 className="me-auto">Budgets</h1>
-                  <Button variant="primary" onClick={() => setShowAddBudgetModal(true)}>Add Budget</Button>
-                  <Button variant="outline-primary" onClick={() => setShowAddExpenseModal(true)}>Add Expense</Button>
-              </Stack>
-              <div className="budgetCards">
-                  {allBudgets.map(budget => 
-                     budget.id !== UNCATEGORIZED_BUDGET_ID ? (
-                         <BudgetCard
-                          key={budget.id} 
-                          name={budget.name}      
-                          amount={budget.totalSpent}
-                          max={budget.maxAmount}     
-                          onAddExpenseClick={() => {
-                                openAddExpenseModal(budget.id)
-                                setShowAddExpenseModal(true)
-                          }}
-                          onViewExpensesClick={() => {
-                                setViewExpensesModal(budget.id)
-                          }}
-                          onEditBudgetClick={() => {
-                                openEditBudgetModal(budget.id)
-                                setShowEditBudgetModal(true)
-                          }}      
-                      >
-                      </BudgetCard>
-                    ) : null   
-                  )}
-                  <UncategorizedBudgetCard
-                    onAddExpenseClick={() => {
-                        openAddExpenseModal(UNCATEGORIZED_BUDGET_ID)
-                        setShowAddExpenseModal(true)
-                    }}
-                    onViewExpensesClick={() =>
-                        setViewExpensesModal(UNCATEGORIZED_BUDGET_ID)
-                    }
-                 /> 
-                 <TotalBudgetCard/>                
-              </div>
-          </Container>
-          <AddBudgetModal
-                show={showAddBudgetModal}
-                handleClose={() => setShowAddBudgetModal(false)}
-          />
-          <EditBudgetModal
-                show={showEditBudgetModal}
-                budgetId={selectedBudgetId}
-                handleClose={() => setShowEditBudgetModal(false)}
-          />
-          <AddExpenseModal
-                show={showAddExpenseModal}
-                defaultBudgetId={selectedBudgetId}
-                handleClose={() => setShowAddExpenseModal(false)}
-          />
-          <ViewExpensesModal
-                budgetId={viewExpensesModal}
-                handleClose={() => setViewExpensesModal()}
-          />
-    </>           
-  )
+  // otherwise, show the main dashboard
+  return <Dashboard />
 }
 
 export default App
