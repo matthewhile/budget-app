@@ -56,3 +56,26 @@
 .read-the-docs {
   color: #888;
 }
+
+.account-container {
+    background-image: url('./assets/account-bg.jpg');
+    background-size: contain;       /* Scale image to fill screen */
+    background-position: center;  /* Center it nicely */
+    background-repeat: no-repeat; /* Prevent tiling */
+    background-attachment: fixed; /* (Optional) Keeps background fixed while scrolling */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;            /* Full viewport height */
+    padding: 2rem 0;
+}
+
+.account-box {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    max-width: 500px;
+    width: 100%;
+    opacity: .9;
+}
