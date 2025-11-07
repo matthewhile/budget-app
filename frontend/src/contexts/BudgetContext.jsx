@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import axios from "axios";
+import axiosClient from "../api/axiosClient"
+
 
 const BudgetsContext = React.createContext()
 
@@ -16,22 +17,22 @@ export const BudgetsProvider = ({ children }) => {
 
     // Get all budgets
     useEffect(() => {
-        axios.get("http://localhost:5023/api/budget")
+        axiosClient.get("/api/budget")
             .then(response => setAllBudgets(response.data))
             .catch(error => console.error("Error fetching budgets:", error));
     }, []);
 
     // Get a specified budget
     function getBudgetById(budgetId) {
-        return axios
-            .get(`http://localhost:5023/api/budget/budgetId/${budgetId}`)
+        return axiosClient
+            .get(`/api/budget/budgetId/${budgetId}`)
             .then(response => response.data)
             .catch(error => console.error("Error fetching selected budget:", error));
     }
 
     // Get a specified budget's expenses
     function getBudgetExpenses(budgetId) {
-        axios.get(`http://localhost:5023/api/expense/budgetId/${budgetId}`)
+        axiosClient.get(`/api/expense/budgetId/${budgetId}`)
             .then(response => {
                 setExpensesByBudget(prev => ({
                     ...prev,
@@ -43,7 +44,7 @@ export const BudgetsProvider = ({ children }) => {
 
     // Add a new budget
     function addBudget(newBudget) {
-        axios.post("http://localhost:5023/api/budget", newBudget)
+        axiosClient.post("/api/budget", newBudget)
             .then(response => {
                 const addedBudget = response.data;
                 setAllBudgets(prevBudgets => [...prevBudgets, addedBudget]);
@@ -53,7 +54,7 @@ export const BudgetsProvider = ({ children }) => {
 
     // Update a budget
     function updateBudget(id, budget) {
-        axios.patch(`http://localhost:5023/api/budget/${id}`, budget)
+        axiosClient.patch(`/api/budget/${id}`, budget)
             .then(response => {
                 const updatedBudget = response.data;
                 setAllBudgets(prevBudgets =>
@@ -67,7 +68,7 @@ export const BudgetsProvider = ({ children }) => {
 
     // Delete a budget
     function deleteBudget(id) {
-        axios.delete(`http://localhost:5023/api/budget/${id}`)
+        axiosClient.delete(`/api/budget/${id}`)
             .then(() => {
                 setAllBudgets(prev => prev.filter(b => b.id !== id));
                 getBudgetExpenses(UNCATEGORIZED_BUDGET_ID);
@@ -78,7 +79,7 @@ export const BudgetsProvider = ({ children }) => {
 
     // Add a new expense
     function addExpense(newExpense) {
-        axios.post("http://localhost:5023/api/expense", newExpense)
+        axiosClient.post("/api/expense", newExpense)
             .then(response => {
                 const updatedBudget = response.data;
                 setExpensesByBudget(prev => ({
@@ -94,7 +95,7 @@ export const BudgetsProvider = ({ children }) => {
 
     // Delete an expense
     function deleteExpense(expense) {
-        axios.delete(`http://localhost:5023/api/expense/${expense.id}`)
+        axiosClient.delete(`/api/expense/${expense.id}`)
             .then(response => {
                 const updatedBudget = response.data;
                 setExpensesByBudget(prev => ({

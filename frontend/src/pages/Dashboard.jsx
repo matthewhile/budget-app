@@ -1,6 +1,7 @@
 import '../index.css'
 import { useState } from 'react';
 import { Container, Stack, Button } from 'react-bootstrap';
+import {useAuth} from "../contexts/AuthContext"
 import BudgetCard from '../components/BudgetCard';
 import UncategorizedBudgetCard from "../components/UncategorizedBudgetCard";
 import ViewExpensesModal from "../components/ViewExpensesModal";
@@ -22,6 +23,8 @@ function Dashboard() {
 
   const [selectedBudgetId, setSelectedBudgetId] = useState() 
 
+  const {logout} = useAuth()
+
   function openAddExpenseModal(budgetId) {
       setShowAddExpenseModal(true)
       setSelectedBudgetId(budgetId)
@@ -36,6 +39,9 @@ function Dashboard() {
   return (
       <>
           <Container className="my-4">
+            <div>
+                <Button varient="primary" onClick={() => logout()}>Log out</Button>
+            </div>
               <Stack direction="horizontal" gap="2" className="mb-4">
                       <h1 className="me-auto">Budgets</h1>
                   <Button variant="primary" onClick={() => setShowAddBudgetModal(true)}>Add Budget</Button>
