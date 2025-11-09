@@ -15,7 +15,7 @@ namespace BudgetApp.Services
         }
         
         // Return all expenses
-        public async Task<List<ExpenseDTO>> GetAllExpensesAsync()
+        public async Task<List<ExpenseDTO>> GetAllExpensesAsync(string userId)
         {
             return await _context.Expenses
                 .Select(e => new ExpenseDTO
@@ -25,13 +25,13 @@ namespace BudgetApp.Services
                     Amount = e.Amount,
                     Date = e.Date,
                     BudgetId = e.BudgetId,
-                    UserId = e.UserId
+                    UserId = userId
                 })
                 .ToListAsync();
         }
 
         // Select a specific expense by ID
-        public async Task<ExpenseDTO?> GetExpenseByIdAsync(int id)
+        public async Task<ExpenseDTO?> GetExpenseByIdAsync(int id, string userId)
         {
             return await _context.Expenses
                 .Where(e => e.Id == id)
@@ -42,15 +42,17 @@ namespace BudgetApp.Services
                     Amount = e.Amount,
                     Date = e.Date,
                     BudgetId = e.BudgetId,
-                    UserId = e.UserId
+                    UserId = userId
                 })
                 .FirstOrDefaultAsync();
         }
 
         // Delete an expense
-        public async Task DeleteExpenseAsync(int id)
+        public async Task DeleteExpenseAsync(int id, string userId)
         {
-            var expense = await _context.Expenses.FirstOrDefaultAsync(e => e.Id == id);
+            var expense = await _context.Expenses
+                .Where(e => e.UserId == userId)
+                .FirstOrDefaultAsync(e => e.Id == id);
 
             if (expense == null)
                 throw new KeyNotFoundException();
@@ -60,7 +62,7 @@ namespace BudgetApp.Services
         }
 
         // Create a new expense
-        public async Task<ExpenseDTO> CreateExpenseAsync(AddExpenseDTO dto)
+        public async Task<ExpenseDTO> CreateExpenseAsync(AddExpenseDTO dto, string userId)
         {
             var expense = new Expense
             {
@@ -68,7 +70,7 @@ namespace BudgetApp.Services
                 Amount = dto.Amount,
                 Date = dto.Date,
                 BudgetId = dto.BudgetId,
-                UserId = dto.UserId
+                UserId = userId
             };
 
             _context.Expenses.Add(expense);
@@ -80,8 +82,7 @@ namespace BudgetApp.Services
                 Description= expense.Description,
                 Amount = expense.Amount,
                 Date = expense.Date,
-                BudgetId = expense.BudgetId,
-                UserId = expense.UserId
+                BudgetId = expense.BudgetId
             };
         }
     }

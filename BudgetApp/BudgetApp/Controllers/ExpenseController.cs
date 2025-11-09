@@ -2,6 +2,7 @@
 using BudgetApp.Models;
 using BudgetApp.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 
@@ -12,19 +13,21 @@ namespace BudgetApp.Controllers
     public class ExpenseController : ControllerBase
     {
         private readonly ExpenseService _expenseService;
-
         private readonly BudgetService _budgetService;
+        private readonly UserManager<User> _userManager;
 
-        public ExpenseController(ExpenseService expenseService, BudgetService budgetService)
+        public ExpenseController(ExpenseService expenseService, BudgetService budgetService, UserManager<User> userManager)
         {
             _expenseService = expenseService;
             _budgetService = budgetService;
+            _userManager = userManager;
         }
 
         [HttpGet("expenseId/{id}")]
         public async Task<IActionResult> GetExpenseById(int id)
         {
-            var expense = await _expenseService.GetExpenseByIdAsync(id);
+            var userId = _userManager.GetUserId(User);
+            var expense = await _expenseService.GetExpenseByIdAsync(id, userId);
             if (expense == null)
             {
                 return NotFound();
@@ -35,7 +38,8 @@ namespace BudgetApp.Controllers
         [HttpGet("budgetId/{id}")]
         public async Task<IActionResult> GetBudgetExpenses(int id)
         {
-            var budget = await _budgetService.GetBudgetByIdAsync(id);
+            var userId = _userManager.GetUserId(User);
+            var budget = await _budgetService.GetBudgetByIdAsync(id, userId);
             if (budget == null)
             {
                 return NotFound();
@@ -48,10 +52,11 @@ namespace BudgetApp.Controllers
         {
             try
             {
-                var expense = await _expenseService.GetExpenseByIdAsync(id);
-                await _expenseService.DeleteExpenseAsync(id);
+                var userId = _userManager.GetUserId(User);
+                var expense = await _expenseService.GetExpenseByIdAsync(id, userId);
+                await _expenseService.DeleteExpenseAsync(id, userId);
 
-                var updatedBudget = await _budgetService.GetBudgetByIdAsync((int)expense.BudgetId);
+                var updatedBudget = await _budgetService.GetBudgetByIdAsync((int)expense.BudgetId, userId);
                 
                 return Ok(updatedBudget);
             }
@@ -65,8 +70,9 @@ namespace BudgetApp.Controllers
         public async Task<IActionResult> AddNewExpense(AddExpenseDTO dto)
         {
             if (dto == null) return BadRequest();
-            var newExpense = await _expenseService.CreateExpenseAsync(dto);
-            var updatedBudget = await _budgetService.GetBudgetByIdAsync((int)newExpense.BudgetId);
+            var userId = _userManager.GetUserId(User);
+            var newExpense = await _expenseService.CreateExpenseAsync(dto, userId);
+            var updatedBudget = await _budgetService.GetBudgetByIdAsync((int)newExpense.BudgetId, userId);
             return Ok(updatedBudget);
         }
     }

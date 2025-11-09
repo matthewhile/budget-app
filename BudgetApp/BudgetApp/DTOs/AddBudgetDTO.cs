@@ -9,7 +9,5 @@
         public decimal MaxAmount { get; set; }
 
         public int TimePeriodId { get; set; } = 1;
-
-        public string UserId { get; set; } = string.Empty;
     }
 }

@@ -12,8 +12,6 @@ namespace BudgetApp.DTOs
 
         public int TimePeriodId { get; set; }
 
-        public string UserId { get; set; } = string.Empty;
-
         public decimal TotalSpent { get; set; }
 
         public List<ExpenseDTO> Expenses { get; set; } = new();
