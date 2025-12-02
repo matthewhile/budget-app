@@ -1,3 +1,4 @@
+import '../styles/Login.css';
 import { Form, Button } from "react-bootstrap"
 import { useRef, useState } from "react"
 import {useAuth} from "../contexts/AuthContext"
@@ -18,20 +19,20 @@ function Login() {
     }
 
     return (
-        <div className="account-container">
-            <div className="account-box">
+        <div className="login-container">
+            <div className="login-box">
                 <h2 className="text-center mb-4">Login</h2>
                 <Form onSubmit={handleSubmit}>
                     <div className="text-danger"></div>
                     <Form.Group className="mb-3">
-                        <Form.Label>Email</Form.Label>
+                        <Form.Label className="login-label">Email</Form.Label>
                         <Form.Control ref={emailRef} type="text" required/>
                     </Form.Group>
                     <Form.Group className="mb-3">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control ref={passwordRef} required/>
+                        <Form.Label className="login-label">Password</Form.Label>
+                        <Form.Control ref={passwordRef} type="password" required/>
                     </Form.Group>
-                    <Button type="submit">Login</Button>
+                    <Button className="login-btn" type="submit">Login</Button>
                 </Form>
             </div>
         </div>

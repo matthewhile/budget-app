@@ -1,0 +1,29 @@
+/* :::::::::::::::::: LOGIN CSS :::::::::::::::::: */
+.login-container {
+    background-image: url('../assets/account-bg.jpg');
+    background-size: cover;         
+    background-position: center;    
+    background-repeat: no-repeat; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;               
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+
+.login-btn {
+   margin-left:auto;
+}
+
+.login-box {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    max-width: 500px;
+    width: 100%;
+    opacity: .9;
+}

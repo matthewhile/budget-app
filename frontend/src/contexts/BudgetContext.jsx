@@ -16,11 +16,17 @@ export const BudgetsProvider = ({ children }) => {
 
 
     // Get all budgets
-    useEffect(() => {
+    // useEffect(() => {
+    //     axiosClient.get("/api/budget")
+    //         .then(response => setAllBudgets(response.data))
+    //         .catch(error => console.error("Error fetching budgets:", error));
+    // }, []);
+
+    function getAllBudgets() {
         axiosClient.get("/api/budget")
-            .then(response => setAllBudgets(response.data))
-            .catch(error => console.error("Error fetching budgets:", error));
-    }, []);
+             .then(response => setAllBudgets(response.data))
+             .catch(error => console.error("Error fetching budgets:", error));
+    }
 
     // Get a specified budget
     function getBudgetById(budgetId) {
@@ -113,6 +119,7 @@ export const BudgetsProvider = ({ children }) => {
     <BudgetsContext.Provider value={{
         allBudgets,
         expensesByBudget,
+        getAllBudgets,
         getBudgetExpenses,
         getBudgetById,
         addBudget,

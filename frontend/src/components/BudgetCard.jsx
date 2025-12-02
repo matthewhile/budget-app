@@ -1,6 +1,5 @@
 import { Button, Card, ProgressBar, Stack } from "react-bootstrap";
 import { currencyFormatter } from "../utils"
-import '../App.css'
 import { FaEllipsisVertical } from "react-icons/fa6";
 
 
