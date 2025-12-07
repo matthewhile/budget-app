@@ -27,3 +27,24 @@
     width: 100%;
     opacity: .9;
 }
+
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper .form-control {
+    padding-right: 40px; 
+}
+
+.password-toggle-icon {
+    position: absolute;
+    right: 10px;          
+    top: 50%;             
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #555;
+}
+
+.password-toggle-icon:hover {
+    color: #000;
+}
