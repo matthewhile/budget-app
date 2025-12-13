@@ -10,12 +10,12 @@ namespace BudgetApp.Controllers
     [Route("api/[controller]")]
     public class BudgetController : ControllerBase
     {
-        private readonly BudgetService _budgeService;
+        private readonly BudgetService _budgetService;
         private readonly UserManager<User> _userManager;
 
-        public BudgetController(BudgetService budgeService, UserManager<User> userManager)
+        public BudgetController(BudgetService budgetService, UserManager<User> userManager)
         {
-            _budgeService = budgeService;
+            _budgetService = budgetService;
             _userManager = userManager;
         }
 
@@ -23,7 +23,11 @@ namespace BudgetApp.Controllers
         public async Task<IActionResult> GetAllBudgets()
         {
             var userId = _userManager.GetUserId(User);
-            var budgets = await _budgeService.GetAllBudgetsAsync(userId);
+            if (userId == null) return Unauthorized();
+
+            var budgets = await _budgetService.GetAllBudgetsAsync(userId);
+            if (budgets == null) return NotFound();
+
             return Ok(budgets);
         }
 
@@ -31,19 +35,35 @@ namespace BudgetApp.Controllers
         public async Task<IActionResult> GetBudgetById(int id)
         {
             var userId = _userManager.GetUserId(User);
-            var budget = await _budgeService.GetBudgetByIdAsync(id, userId);
-            if (budget == null)
-                return NotFound();
+            if (userId == null) return Unauthorized();
+
+            var budget = await _budgetService.GetBudgetByIdAsync(id, userId);
+            if (budget == null) return NotFound();
 
             return Ok(budget);
+        }
+
+        [HttpGet("budgetIdExpenses/{id}")]
+        public async Task<IActionResult> GetBudgetExpenses(int id)
+        {
+            var userId = _userManager.GetUserId(User);
+            if (userId == null) return Unauthorized();
+
+            var budget = await _budgetService.GetBudgetByIdAsync(id, userId);
+            if (budget == null) return NotFound();
+
+            return Ok(budget.Expenses);
         }
 
         [HttpPost]
         public async Task<IActionResult> AddBudget([FromBody] AddBudgetDTO dto)
         {
             if (dto == null) return BadRequest();
+
             var userId = _userManager.GetUserId(User);
-            var newBudget = await _budgeService.CreateBudgetAsync(dto, userId);
+            if (userId == null) return Unauthorized();
+
+            var newBudget = await _budgetService.CreateBudgetAsync(dto, userId);
             return CreatedAtAction(nameof(GetBudgetById), new { id = newBudget.Id }, newBudget);
         }
 
@@ -51,24 +71,22 @@ namespace BudgetApp.Controllers
         public async Task<IActionResult> UpdateBudget(int id, UpdateBudgetDTO dto)
         {
             if (dto == null) return BadRequest();
+
             var userId = _userManager.GetUserId(User);
-            var updatedBudget = await _budgeService.UpdateBudgetAsync(id, dto, userId);
+            if (userId == null) return Unauthorized();
+
+            var updatedBudget = await _budgetService.UpdateBudgetAsync(id, dto, userId);
             return Ok(updatedBudget);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBudget(int id)
         {
-            try
-            {
-                var userId = _userManager.GetUserId(User);
-                await _budgeService.DeleteBudgetAsync(id, userId);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var userId = _userManager.GetUserId(User);
+            if (userId == null) return Unauthorized();
+
+            await _budgetService.DeleteBudgetAsync(id, userId);
+            return Ok();
         }
     }
 }

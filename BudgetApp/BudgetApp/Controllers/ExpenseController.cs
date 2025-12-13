@@ -27,52 +27,39 @@ namespace BudgetApp.Controllers
         public async Task<IActionResult> GetExpenseById(int id)
         {
             var userId = _userManager.GetUserId(User);
+            if (userId == null) return Unauthorized();
+
             var expense = await _expenseService.GetExpenseByIdAsync(id, userId);
-            if (expense == null)
-            {
-                return NotFound();
-            }
+            if (expense == null) return NotFound();
+
             return Ok(expense);
-        }
-
-        [HttpGet("budgetId/{id}")]
-        public async Task<IActionResult> GetBudgetExpenses(int id)
-        {
-            var userId = _userManager.GetUserId(User);
-            var budget = await _budgetService.GetBudgetByIdAsync(id, userId);
-            if (budget == null)
-            {
-                return NotFound();
-            }
-            return Ok(budget.Expenses);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteExpense(int id)
-        {
-            try
-            {
-                var userId = _userManager.GetUserId(User);
-                var expense = await _expenseService.GetExpenseByIdAsync(id, userId);
-                await _expenseService.DeleteExpenseAsync(id, userId);
-
-                var updatedBudget = await _budgetService.GetBudgetByIdAsync((int)expense.BudgetId, userId);
-                
-                return Ok(updatedBudget);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(new { message = ex.Message });
-            }
         }
 
         [HttpPost]
         public async Task<IActionResult> AddNewExpense(AddExpenseDTO dto)
         {
             if (dto == null) return BadRequest();
+
             var userId = _userManager.GetUserId(User);
+            if (userId == null) return Unauthorized();
+
             var newExpense = await _expenseService.CreateExpenseAsync(dto, userId);
             var updatedBudget = await _budgetService.GetBudgetByIdAsync((int)newExpense.BudgetId, userId);
+
+            return Ok(updatedBudget);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteExpense(int id)
+        {
+            var userId = _userManager.GetUserId(User);
+            if (userId == null) return Unauthorized();
+
+            var expense = await _expenseService.GetExpenseByIdAsync(id, userId);
+            await _expenseService.DeleteExpenseAsync(id, userId);
+
+            var updatedBudget = await _budgetService.GetBudgetByIdAsync((int)expense.BudgetId, userId);
+                
             return Ok(updatedBudget);
         }
     }

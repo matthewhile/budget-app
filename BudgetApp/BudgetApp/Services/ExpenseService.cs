@@ -17,73 +17,105 @@ namespace BudgetApp.Services
         // Return all expenses
         public async Task<List<ExpenseDTO>> GetAllExpensesAsync(string userId)
         {
-            return await _context.Expenses
-                .Select(e => new ExpenseDTO
-                {
-                    Id = e.Id,
-                    Description = e.Description,
-                    Amount = e.Amount,
-                    Date = e.Date,
-                    BudgetId = e.BudgetId,
-                    UserId = userId
-                })
-                .ToListAsync();
+            try
+            {
+                return await _context.Expenses
+                    .Select(e => new ExpenseDTO
+                    {
+                        Id = e.Id,
+                        Description = e.Description,
+                        Amount = e.Amount,
+                        Date = e.Date,
+                        BudgetId = e.BudgetId,
+                        UserId = userId
+                    })
+                    .ToListAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
         }
 
         // Select a specific expense by ID
         public async Task<ExpenseDTO?> GetExpenseByIdAsync(int id, string userId)
         {
-            return await _context.Expenses
-                .Where(e => e.Id == id)
-                .Select(e => new ExpenseDTO
-                {
-                    Id = e.Id,
-                    Description = e.Description,
-                    Amount = e.Amount,
-                    Date = e.Date,
-                    BudgetId = e.BudgetId,
-                    UserId = userId
-                })
-                .FirstOrDefaultAsync();
+            try
+            {
+                return await _context.Expenses
+                    .Where(e => e.Id == id)
+                    .Select(e => new ExpenseDTO
+                    {
+                        Id = e.Id,
+                        Description = e.Description,
+                        Amount = e.Amount,
+                        Date = e.Date,
+                        BudgetId = e.BudgetId,
+                        UserId = userId
+                    })
+                    .FirstOrDefaultAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
         }
 
         // Delete an expense
         public async Task DeleteExpenseAsync(int id, string userId)
         {
-            var expense = await _context.Expenses
-                .Where(e => e.UserId == userId)
-                .FirstOrDefaultAsync(e => e.Id == id);
+            try
+            {
+                var expense = await _context.Expenses
+                    .Where(e => e.UserId == userId)
+                    .FirstOrDefaultAsync(e => e.Id == id);
 
-            if (expense == null)
-                throw new KeyNotFoundException();
+                if (expense == null) throw new KeyNotFoundException();
 
-            _context.Expenses.Remove(expense);
-            await _context.SaveChangesAsync();
+                _context.Expenses.Remove(expense);
+                await _context.SaveChangesAsync();
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
         }
 
         // Create a new expense
         public async Task<ExpenseDTO> CreateExpenseAsync(AddExpenseDTO dto, string userId)
         {
-            var expense = new Expense
+            try
             {
-                Description = dto.Description,
-                Amount = dto.Amount,
-                Date = dto.Date,
-                BudgetId = dto.BudgetId,
-                UserId = userId
-            };
+                var expense = new Expense
+                {
+                    Description = dto.Description,
+                    Amount = dto.Amount,
+                    Date = dto.Date,
+                    BudgetId = dto.BudgetId,
+                    UserId = userId
+                };
 
-            _context.Expenses.Add(expense);
-            await _context.SaveChangesAsync();
+                _context.Expenses.Add(expense);
+                await _context.SaveChangesAsync();
 
-            return new ExpenseDTO
+                return new ExpenseDTO
+                {
+                    Id = expense.Id,
+                    Description = expense.Description,
+                    Amount = expense.Amount,
+                    Date = expense.Date,
+                    BudgetId = expense.BudgetId
+                };
+            }
+            catch (Exception e)
             {
-                Id = expense.Id,
-                Description= expense.Description,
-                Amount = expense.Amount,
-                Date = expense.Date,
-                BudgetId = expense.BudgetId
-            };
+                Console.WriteLine(e.Message);
+                throw;
+            }
         }
     }
 }

@@ -20,7 +20,7 @@ function Login() {
         const success = await login(email, password)
 
         if (!success) {
-            setError("Incorrect Username or Password! Please try again.")
+            setError("Invalid Email or Password! Please try again.")
         }
     }
 
@@ -43,7 +43,7 @@ function Login() {
                         <div className="password-wrapper">
                             <Form.Control ref={passwordRef} id="passwordField" type={showPassword ? "text" : "password"} required></Form.Control>
                             <span className="password-toggle-icon" onClick={togglePasswordVisibility}>
-                                {showPassword ? (<FaEye size={20} />) : (<FaEyeSlash size={20} />)}
+                                {showPassword ? (<FaEyeSlash size={20} />) : (<FaEye size={20} />)}
                             </span>
                         </div>
                     </Form.Group>

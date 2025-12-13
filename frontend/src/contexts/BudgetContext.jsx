@@ -38,7 +38,7 @@ export const BudgetsProvider = ({ children }) => {
 
     // Get a specified budget's expenses
     function getBudgetExpenses(budgetId) {
-        axiosClient.get(`/api/expense/budgetId/${budgetId}`)
+        axiosClient.get(`/api/budget/budgetIdExpenses/${budgetId}`)
             .then(response => {
                 setExpensesByBudget(prev => ({
                     ...prev,
