@@ -187,7 +187,8 @@ namespace BudgetApp.Migrations
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     MaxAmount = table.Column<decimal>(type: "numeric(10,2)", nullable: false),
                     TimePeriodId = table.Column<int>(type: "integer", nullable: false),
-                    UserId = table.Column<string>(type: "text", nullable: false)
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    IsSystem = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -232,7 +233,7 @@ namespace BudgetApp.Migrations
                         column: x => x.BudgetId,
                         principalTable: "Budgets",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(

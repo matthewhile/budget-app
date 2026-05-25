@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BudgetApp.Migrations
 {
     [DbContext(typeof(BudgetAppDbContext))]
-    [Migration("20251017004232_Create_Database")]
+    [Migration("20260524213845_Create_Database")]
     partial class Create_Database
     {
         /// <inheritdoc />
@@ -32,6 +32,9 @@ namespace BudgetApp.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsSystem")
+                        .HasColumnType("boolean");
 
                     b.Property<decimal>("MaxAmount")
                         .HasColumnType("decimal(10,2)");

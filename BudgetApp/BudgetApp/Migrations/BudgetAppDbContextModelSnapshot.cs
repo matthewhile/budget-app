@@ -30,6 +30,9 @@ namespace BudgetApp.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("IsSystem")
+                        .HasColumnType("boolean");
+
                     b.Property<decimal>("MaxAmount")
                         .HasColumnType("decimal(10,2)");
 

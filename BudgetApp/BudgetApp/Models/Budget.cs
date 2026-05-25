@@ -28,5 +28,8 @@ public class Budget
     [ForeignKey(nameof(UserId))]
     public virtual User User { get; set; } = null!;
 
+    [Required]
+    public bool IsSystem { get; set; } = false;
+
     public virtual ICollection<Expense> Expenses { get; set; } = new List<Expense>();
 }

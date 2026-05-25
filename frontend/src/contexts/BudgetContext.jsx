@@ -4,7 +4,7 @@ import axiosClient from "../api/axiosClient"
 
 const BudgetsContext = React.createContext()
 
-export const UNCATEGORIZED_BUDGET_ID = 1;
+export const UNCATEGORIZED_BUDGET_ID = 0;
 
 export function useBudgets() {
     return useContext(BudgetsContext)
@@ -16,12 +16,6 @@ export const BudgetsProvider = ({ children }) => {
 
 
     // Get all budgets
-    // useEffect(() => {
-    //     axiosClient.get("/api/budget")
-    //         .then(response => setAllBudgets(response.data))
-    //         .catch(error => console.error("Error fetching budgets:", error));
-    // }, []);
-
     function getAllBudgets() {
         axiosClient.get("/api/budget")
              .then(response => setAllBudgets(response.data))
