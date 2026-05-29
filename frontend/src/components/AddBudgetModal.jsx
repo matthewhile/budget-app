@@ -1,22 +1,29 @@
 import { Form, Modal, Button } from "react-bootstrap"
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import { useBudgets } from "../contexts/BudgetContext"
 
 export default function AddBudgetModal({ show, handleClose }) {
   const nameRef = useRef();
   const maxRef = useRef();
+  const [submitError, setSubmitError] = useState(null); 
   const { addBudget } = useBudgets();
 
   async function handleSubmit(e) {
     e.preventDefault();
-
+    setSubmitError(null);
     const newBudget = {
       name: nameRef.current.value,  
       maxAmount: parseFloat(maxRef.current.value),
     };
 
-    addBudget(newBudget);
-    handleClose();     
+    try {
+      await addBudget(newBudget);
+      handleClose();
+    } 
+    catch (error) {
+      console.log(error)
+      setSubmitError("Failed to add budget. Please try again.")
+    }
   }
 
   return (

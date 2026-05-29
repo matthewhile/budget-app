@@ -20,10 +20,10 @@ namespace BudgetApp.Services
            4. Save Budget
          */
 
-        //public async Task InitializeNewUserAsync(User user)
-        //{
+        public async Task InitializeNewUserAsync(User user)
+        {
 
-        //}
+        }
 
     }
 }

@@ -20,6 +20,7 @@ namespace BudgetApp.Services
             try
             {
                 return await _context.Expenses
+                    .Where(e => e.UserId == userId)
                     .Select(e => new ExpenseDTO
                     {
                         Id = e.Id,
@@ -44,7 +45,7 @@ namespace BudgetApp.Services
             try
             {
                 return await _context.Expenses
-                    .Where(e => e.Id == id)
+                    .Where(e => e.Id == id && e.UserId == userId)
                     .Select(e => new ExpenseDTO
                     {
                         Id = e.Id,

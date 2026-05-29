@@ -1,13 +1,14 @@
 import { Modal, Button, Stack } from "react-bootstrap"
 import { useBudgets } from "../contexts/BudgetContext"
 import { currencyFormatter } from "../utils"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { formatDate } from "../utils"
 
 export default function ViewExpensesModal({ budgetId, handleClose }) {
 
   const { allBudgets, getBudgetExpenses, deleteExpense, expensesByBudget } = useBudgets();
-  
+  const [deleteError, setDeleteError] = useState(null);
+
   useEffect(() => {
     if (budgetId != null) {
       getBudgetExpenses(budgetId);
@@ -47,7 +48,15 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
                     {currencyFormatter.format(expense.amount)}
                 </div>
                 <Button
-                    onClick={() => deleteExpense(expense)}
+                    onClick={async () => {
+                        setDeleteError(null);
+                        try {
+                            await deleteExpense(expense);
+                        } catch (error) {
+                            console.log(error);
+                            setDeleteError("Something wen't wrong! Failed to delete expense.");
+                        }
+                    }}
                     size="sm"
                     variant="outline-danger"
                 >
@@ -56,6 +65,7 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
                 </Stack>
             ))}
         </Stack>
+        {deleteError && <p className="text-danger mt-2">{deleteError}</p>}
       </Modal.Body>
     </Modal>
   )

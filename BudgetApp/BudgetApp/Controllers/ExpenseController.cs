@@ -59,7 +59,7 @@ namespace BudgetApp.Controllers
             await _expenseService.DeleteExpenseAsync(id, userId);
 
             var updatedBudget = await _budgetService.GetBudgetByIdAsync((int)expense.BudgetId, userId);
-                
+
             return Ok(updatedBudget);
         }
     }

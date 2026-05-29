@@ -6,6 +6,8 @@ export default function EditBudgetModal({ show, budgetId, handleClose }) {
 
 const {updateBudget, getBudgetById, deleteBudget} = useBudgets();
 const [selectedBudget, setSelectedBudget] = useState(null);
+const [submitError, setSubmitError] = useState(null);
+const [deleteError, setDeleteError] = useState(null);
 
   // Fetch existing budget data only when modal opens or budgetId changes
   useEffect(() => {
@@ -21,14 +23,21 @@ const [selectedBudget, setSelectedBudget] = useState(null);
 
   async function handleSubmit(e) {
     e.preventDefault();
-  
+    setSubmitError(null)
     const budget = {
       name: selectedBudget?.name,
       maxAmount: selectedBudget?.maxAmount ?? 0
     }
 
-    updateBudget(budgetId, budget);
-    handleClose();
+    try {
+      updateBudget(budgetId, budget);
+      handleClose();
+    }
+    catch {
+      console.error("Error updating budget " + budget.id, error);
+      setSubmitError("Failed to update budget. Please try again.")
+    }
+
   }
   
   return (
@@ -64,11 +73,18 @@ const [selectedBudget, setSelectedBudget] = useState(null);
               }
             />
           </Form.Group>
+          {submitError && <p className="text-danger">{submitError}</p>}
             <div className="d-flex justify-content-between">
               <Button
-                onClick={() => {
-                  deleteBudget(budgetId)
-                  handleClose()
+                onClick={async () => {
+                  setDeleteError(null); 
+                  try {
+                    await deleteBudget(budgetId)
+                    handleClose()
+                  } catch (error) {
+                    console.error("Failed to delete buget", error)
+                    setDeleteError("Something wen't wrong! Failed to delete expense.");
+                  }
                 }}
                 variant="outline-danger"
               >
@@ -79,6 +95,7 @@ const [selectedBudget, setSelectedBudget] = useState(null);
                 Save
               </Button>
             </div>
+            {deleteError && <p className="text-danger mt-2">{deleteError}</p>}
         </Modal.Body>
       </Form>
     </Modal>

@@ -10,10 +10,12 @@ export default function AddExpenseModal({ show, handleClose, defaultBudgetId }) 
   const budgetIdRef = useRef()
 
   const [selectedDate, setSelectedDate] = useState(new Date())
+  const [submitError, setSubmitError] = useState(null)
   const { addExpense, allBudgets } = useBudgets();
-  
+
   async function handleSubmit(e) {
     e.preventDefault()
+    setSubmitError(null)
     const newExpense = {
       description: descriptionRef.current.value,
       amount: parseFloat(amountRef.current.value),
@@ -22,13 +24,13 @@ export default function AddExpenseModal({ show, handleClose, defaultBudgetId }) 
     }
 
     try {
-      addExpense(newExpense);
-      handleClose();     
+      await addExpense(newExpense);
+      handleClose();
     } 
     catch (error) {
-      console.error("There was an error adding the expense!", error);
+      console.log(error)
+      setSubmitError("Failed to add expense. Please try again.")
     }
-    handleClose()  
   }
 
   return (
@@ -67,6 +69,7 @@ export default function AddExpenseModal({ show, handleClose, defaultBudgetId }) 
                 ))}
             </Form.Select>
           </Form.Group>
+          {submitError && <p className="text-danger">{submitError}</p>}
           <div className="d-flex justify-content-end">
             <Button variant="primary" type="submit">
               Add
