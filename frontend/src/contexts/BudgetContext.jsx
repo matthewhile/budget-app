@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axiosClient from "../api/axiosClient"
+import { useAuth } from "./AuthContext"
 
 
 const BudgetsContext = React.createContext()
@@ -13,14 +14,18 @@ export function useBudgets() {
 export const BudgetsProvider = ({ children }) => {
     const [allBudgets, setAllBudgets] = useState([]);
     const [expensesByBudget, setExpensesByBudget] = useState({});
+    const { isAuthenticated } = useAuth();
+    const [loadBudgetsError, setLoadBudgetsError] = useState(null);
 
-
-    // Get all budgets
-    function getAllBudgets() {
+    useEffect(() => {
+        if (!isAuthenticated) return;
         axiosClient.get("/api/budget")
-             .then(response => setAllBudgets(response.data))
-             .catch(error => console.error("Error fetching budgets:", error));
-    }
+            .then(response => setAllBudgets(response.data))
+            .catch(error => {
+                console.error("Error fetching budgets:", error)
+                setLoadBudgetsError("Failed to load budgets. Please try refreshing the page.");
+            });
+    }, [isAuthenticated]);
 
     // Get a specified budget
     function getBudgetById(budgetId) {
@@ -67,7 +72,6 @@ export const BudgetsProvider = ({ children }) => {
         getBudgetExpenses(UNCATEGORIZED_BUDGET_ID);
     }
 
-
     // Add a new expense
     async function addExpense(newExpense) {
         const response = await axiosClient.post("/api/expense", newExpense);
@@ -97,7 +101,7 @@ export const BudgetsProvider = ({ children }) => {
     <BudgetsContext.Provider value={{
         allBudgets,
         expensesByBudget,
-        getAllBudgets,
+        loadBudgetsError,
         getBudgetExpenses,
         getBudgetById,
         addBudget,

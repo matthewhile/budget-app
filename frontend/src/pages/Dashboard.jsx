@@ -1,6 +1,6 @@
 import '../styles/Dashboard.css';
-import { useState, useEffect } from 'react';
-import { Container, Stack, Button } from 'react-bootstrap';
+import { useState } from 'react';
+import { Container, Stack, Button, Alert } from 'react-bootstrap';
 import {useAuth} from "../contexts/AuthContext"
 import BudgetCard from '../components/BudgetCard';
 import UncategorizedBudgetCard from "../components/UncategorizedBudgetCard";
@@ -14,7 +14,7 @@ import { UNCATEGORIZED_BUDGET_ID, useBudgets } from '../contexts/BudgetContext';
 
 function Dashboard() {
 
-  const { allBudgets, getAllBudgets } = useBudgets();
+  const { allBudgets, loadBudgetsError } = useBudgets();
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false)
   const [showEditBudgetModal, setShowEditBudgetModal] = useState(false);
 
@@ -35,11 +35,6 @@ function Dashboard() {
       setSelectedBudgetId(budgetId)
   }
 
-  useEffect(() => {
-        getAllBudgets();
-  }, []);
-
-
   return (
       <>
         <div className="dashboard-container">
@@ -52,6 +47,7 @@ function Dashboard() {
                   <Button variant="primary" onClick={() => setShowAddBudgetModal(true)}>Add Budget</Button>
                   <Button variant="outline-primary" onClick={() => setShowAddExpenseModal(true)}>Add Expense</Button>
               </Stack>
+               {loadBudgetsError && (<Alert variant="danger">{loadBudgetsError}</Alert>)}
               <div className="budgetCards">
                   {allBudgets.map(budget => 
                      budget.id !== UNCATEGORIZED_BUDGET_ID ? (

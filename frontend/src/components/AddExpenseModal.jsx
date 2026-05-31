@@ -1,4 +1,4 @@
-import { Form, Modal, Button } from "react-bootstrap"
+import { Form, Modal, Button, Alert } from "react-bootstrap"
 import { useRef, useState } from "react"
 import { useBudgets} from "../contexts/BudgetContext"
 import DatePicker from "react-datepicker";
@@ -69,7 +69,9 @@ export default function AddExpenseModal({ show, handleClose, defaultBudgetId }) 
                 ))}
             </Form.Select>
           </Form.Group>
-          {submitError && <p className="text-danger">{submitError}</p>}
+          {submitError && (
+            <Alert variant="danger" dismissible onClose={() => setSubmitError(null)}>{submitError}</Alert>
+          )}
           <div className="d-flex justify-content-end">
             <Button variant="primary" type="submit">
               Add

@@ -1,4 +1,4 @@
-import { Form, Modal, Button } from "react-bootstrap"
+import { Form, Modal, Button, Alert } from "react-bootstrap"
 import { useEffect, useState } from "react"
 import { useBudgets } from "../contexts/BudgetContext"
 
@@ -73,7 +73,7 @@ const [deleteError, setDeleteError] = useState(null);
               }
             />
           </Form.Group>
-          {submitError && <p className="text-danger">{submitError}</p>}
+          {submitError && (<Alert variant="danger">{submitError}</Alert>)}
             <div className="d-flex justify-content-between">
               <Button
                 onClick={async () => {
@@ -95,7 +95,7 @@ const [deleteError, setDeleteError] = useState(null);
                 Save
               </Button>
             </div>
-            {deleteError && <p className="text-danger mt-2">{deleteError}</p>}
+            {deleteError && (<Alert variant="danger">{deleteError}</Alert>)}
         </Modal.Body>
       </Form>
     </Modal>
