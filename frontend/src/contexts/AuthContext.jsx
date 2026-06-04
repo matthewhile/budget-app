@@ -7,6 +7,19 @@ const AuthContext = createContext()
 export function AuthProvider({ children }) {
 
     const [token, setToken] = useState(localStorage.getItem("token") || "")
+    const [isLoading, setIsLoading] = useState(!!localStorage.getItem("token"))
+
+    useEffect(() => {
+        const storedToken = localStorage.getItem("token")
+        if (!storedToken) return
+
+        axiosClient.get("/manage/info")
+            .catch(() => {
+                setToken("")
+                localStorage.removeItem("token")
+            })
+            .finally(() => setIsLoading(false))
+    }, [])
 
     async function login(email, password) {
         try {
@@ -36,6 +49,7 @@ export function AuthProvider({ children }) {
   const value = {
     token,
     isAuthenticated: !!token,
+    isLoading,
     login,
     logout
   }

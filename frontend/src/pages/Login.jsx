@@ -1,5 +1,5 @@
 import '../styles/Login.css';
-import { Form, Button } from "react-bootstrap"
+import { Form, Button, Alert } from "react-bootstrap"
 import { useRef, useState } from "react"
 import {useAuth} from "../contexts/AuthContext"
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
@@ -9,7 +9,7 @@ function Login() {
     const emailRef = useRef()
     const passwordRef = useRef()
     const {login} = useAuth()
-    const [error, setError] = useState("")
+    const [loginError, setLoginError] = useState("")
     const [showPassword, setShowPassword] = useState(false)
 
     async function handleSubmit(e) {
@@ -20,7 +20,7 @@ function Login() {
         const success = await login(email, password)
 
         if (!success) {
-            setError("Invalid Email or Password! Please try again.")
+            setLoginError("Invalid Email or Password! Please try again.")
         }
     }
 
@@ -33,7 +33,8 @@ function Login() {
             <div className="login-box">
                 <h2 className="text-center mb-4">Login</h2>
                 <Form onSubmit={handleSubmit}>
-                    <div className="text-danger mb-3">{error}</div>
+                    {loginError && (<Alert variant="danger">{loginError}</Alert>)}
+                    {/* <div className="text-danger mb-3">{error}</div> */}
                     <Form.Group className="mb-3">
                         <Form.Label className="login-label">Email</Form.Label>
                         <Form.Control ref={emailRef} type="text" required/>

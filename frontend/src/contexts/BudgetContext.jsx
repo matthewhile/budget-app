@@ -5,7 +5,7 @@ import { useAuth } from "./AuthContext"
 
 const BudgetsContext = React.createContext()
 
-export const UNCATEGORIZED_BUDGET_ID = 0;
+//export const UNCATEGORIZED_BUDGET_ID = 0;
 
 export function useBudgets() {
     return useContext(BudgetsContext)
