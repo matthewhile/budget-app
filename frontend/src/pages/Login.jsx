@@ -34,7 +34,6 @@ function Login() {
                 <h2 className="text-center mb-4">Login</h2>
                 <Form onSubmit={handleSubmit}>
                     {loginError && (<Alert variant="danger">{loginError}</Alert>)}
-                    {/* <div className="text-danger mb-3">{error}</div> */}
                     <Form.Group className="mb-3">
                         <Form.Label className="login-label">Email</Form.Label>
                         <Form.Control ref={emailRef} type="text" required/>

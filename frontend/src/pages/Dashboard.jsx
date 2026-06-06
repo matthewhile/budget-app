@@ -15,7 +15,7 @@ import { useBudgets } from '../contexts/BudgetContext';
 
 function Dashboard() {
 
-  const { allBudgets, loadBudgetsError } = useBudgets();
+  const { allBudgets, loadBudgetsError, setLoadBudgetsError } = useBudgets();
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false)
   const [showEditBudgetModal, setShowEditBudgetModal] = useState(false);
 
@@ -48,7 +48,7 @@ function Dashboard() {
                   <Button variant="primary" onClick={() => setShowAddBudgetModal(true)}>Add Budget</Button>
                   <Button variant="outline-primary" onClick={() => setShowAddExpenseModal(true)}>Add Expense</Button>
               </Stack>
-               {loadBudgetsError && (<Alert variant="danger">{loadBudgetsError}</Alert>)}
+               {loadBudgetsError && (<Alert variant="danger" dismissible onClose={() => setLoadBudgetsError(null)}>{loadBudgetsError}</Alert>)}
               <div className="budgetCards">
                   {allBudgets.map(budget => 
                      /*budget.id !== UNCATEGORIZED_BUDGET_ID ?  ( */

@@ -21,28 +21,36 @@ const [deleteError, setDeleteError] = useState(null);
     }
   }, [budgetId, show]) 
 
-  async function handleSubmit(e) {
+  const handleSaveBudget = async (e) => {
     e.preventDefault();
     setSubmitError(null)
     const budget = {
       name: selectedBudget?.name,
       maxAmount: selectedBudget?.maxAmount ?? 0
     }
-
     try {
-      updateBudget(budgetId, budget);
+      await updateBudget(budgetId, budget);
       handleClose();
-    }
-    catch {
+    } catch {
       console.error("Error updating budget " + budget.id, error);
       setSubmitError("Failed to update budget. Please try again.")
     }
-
   }
-  
+
+  const handleDeleteBudget = async () => {
+    setDeleteError(null)
+    try {
+      await deleteBudget(budgetId);
+      handleClose();
+    } catch (error) {
+      console.error("Failed to delete buget", error)
+      setDeleteError("Something wen't wrong! Failed to delete budget.");
+    }
+  }
+
   return (
     <Modal show={show} onHide={handleClose}>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSaveBudget}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Budget - {selectedBudget?.name}</Modal.Title>
         </Modal.Header>
@@ -58,7 +66,6 @@ const [deleteError, setDeleteError] = useState(null);
               }
             />
           </Form.Group>
-
           <Form.Group className="mb-3" controlId="max">
             <Form.Label>Maximum Spending</Form.Label>
             <Form.Control
@@ -74,28 +81,11 @@ const [deleteError, setDeleteError] = useState(null);
             />
           </Form.Group>
           {submitError && (<Alert variant="danger">{submitError}</Alert>)}
-            <div className="d-flex justify-content-between">
-              <Button
-                onClick={async () => {
-                  setDeleteError(null); 
-                  try {
-                    await deleteBudget(budgetId)
-                    handleClose()
-                  } catch (error) {
-                    console.error("Failed to delete buget", error)
-                    setDeleteError("Something wen't wrong! Failed to delete expense.");
-                  }
-                }}
-                variant="outline-danger"
-              >
-                Delete Budget     
-              </Button>
-
-              <Button variant="primary" type="submit">
-                Save
-              </Button>
-            </div>
-            {deleteError && (<Alert variant="danger">{deleteError}</Alert>)}
+          <div className="d-flex justify-content-between">
+            <Button onClick={handleDeleteBudget} variant="outline-danger">Delete Budget</Button>
+            <Button variant="primary" type="submit">Save</Button>
+          </div>
+          {deleteError && (<Alert variant="danger">{deleteError}</Alert>)}
         </Modal.Body>
       </Form>
     </Modal>

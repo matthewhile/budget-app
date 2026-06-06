@@ -8,19 +8,17 @@ export default function AddBudgetModal({ show, handleClose }) {
   const [submitError, setSubmitError] = useState(null); 
   const { addBudget } = useBudgets();
 
-  async function handleSubmit(e) {
+  const handleAddBudget = async (e) => {
     e.preventDefault();
     setSubmitError(null);
     const newBudget = {
       name: nameRef.current.value,  
       maxAmount: parseFloat(maxRef.current.value),
     };
-
     try {
       await addBudget(newBudget);
       handleClose();
-    } 
-    catch (error) {
+    } catch (error) {
       console.log(error)
       setSubmitError("Failed to add budget. Please try again.")
     }
@@ -28,7 +26,7 @@ export default function AddBudgetModal({ show, handleClose }) {
 
   return (
     <Modal show={show} onHide={handleClose}>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleAddBudget}>
         <Modal.Header closeButton>
           <Modal.Title>New Budget</Modal.Title>
         </Modal.Header>
@@ -41,9 +39,7 @@ export default function AddBudgetModal({ show, handleClose }) {
             <Form.Label>Maximum Spending</Form.Label>
             <Form.Control ref={maxRef} type="number" required min={0} step={0.01}/>
           </Form.Group>
-          {submitError && (
-            <Alert variant="danger">{submitError}</Alert>
-          )}          
+          {submitError && (<Alert variant="danger">{submitError}</Alert>)}          
           <div className="d-flex justify-content-end">
             <Button variant="primary" type="submit">Add</Button>
           </div>

@@ -1,4 +1,4 @@
-import { Modal, Button, Stack } from "react-bootstrap"
+import { Modal, Button, Stack, Alert } from "react-bootstrap"
 import { useBudgets } from "../contexts/BudgetContext"
 import { currencyFormatter } from "../utils"
 import { useEffect, useState } from "react"
@@ -20,6 +20,16 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
   const hasNoExpenses = expenses.length === 0;
   const budget = allBudgets.find(b => b.id === budgetId);
   const budgetName = budget ? budget.name : null;
+
+  const handleDeleteExpense = async (expense) => {
+    setDeleteError(null);
+    try {
+      await deleteExpense(expense);
+    } catch (error) {
+        console.log(error);
+        setDeleteError("Something wen't wrong! Failed to delete expense.");
+    }    
+  }
 
   return (
     <Modal show={budgetId != null} onHide={handleClose}>
@@ -47,25 +57,11 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
                 <div className="fs-5">
                     {currencyFormatter.format(expense.amount)}
                 </div>
-                <Button
-                    onClick={async () => {
-                        setDeleteError(null);
-                        try {
-                            await deleteExpense(expense);
-                        } catch (error) {
-                            console.log(error);
-                            setDeleteError("Something wen't wrong! Failed to delete expense.");
-                        }
-                    }}
-                    size="sm"
-                    variant="outline-danger"
-                >
-                    &times;
-                </Button>
+                <Button onClick={() => handleDeleteExpense(expense)} size="sm" variant="outline-danger"> &times;</Button>
                 </Stack>
             ))}
         </Stack>
-        {deleteError && <p className="text-danger mt-2">{deleteError}</p>}
+        {deleteError && (<Alert variant="danger">{deleteError}</Alert>)}
       </Modal.Body>
     </Modal>
   )

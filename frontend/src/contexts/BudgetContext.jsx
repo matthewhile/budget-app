@@ -102,6 +102,7 @@ export const BudgetsProvider = ({ children }) => {
         allBudgets,
         expensesByBudget,
         loadBudgetsError,
+        setLoadBudgetsError,
         getBudgetExpenses,
         getBudgetById,
         addBudget,
