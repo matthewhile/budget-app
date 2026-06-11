@@ -28,13 +28,17 @@ html, body {
 }
 
 .editBudgetBtn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
   background: none;
   border: none;
   cursor: pointer;
   padding: 8px;
+}
+
+.editBudgetBtn + .dropdown-menu,
+.dropdown:has(.editBudgetBtn) {
+  position: absolute;
+  top: 8px;
+  right: 8px;
 }
 
 .editBudgetBtn svg {

@@ -29,6 +29,7 @@ namespace BudgetApp.Services
                     MaxAmount = b.MaxAmount,
                     TotalSpent = b.Expenses.Sum(e => e.Amount),
                     TimePeriodId = b.TimePeriodId,
+                    IsSystem = b.IsSystem,
                 })
                 .ToListAsync();
             }
@@ -58,6 +59,7 @@ namespace BudgetApp.Services
                     MaxAmount = budget.MaxAmount,
                     TimePeriodId = budget.TimePeriodId,
                     TotalSpent = budget.Expenses.Sum(e => e.Amount),
+                    IsSystem = budget.IsSystem,
                     Expenses = budget.Expenses.Select(e => new ExpenseDTO
                     {
                         Id = e.Id,
@@ -98,7 +100,8 @@ namespace BudgetApp.Services
                     Name = budget.Name,
                     MaxAmount = budget.MaxAmount,
                     TotalSpent = 0,
-                    TimePeriodId = budget.TimePeriodId
+                    TimePeriodId = budget.TimePeriodId,
+                    IsSystem = budget.IsSystem
                 };
             }
             catch (Exception e)
@@ -139,7 +142,8 @@ namespace BudgetApp.Services
                     Id = budget.Id,
                     Name = budget.Name,
                     MaxAmount = budget.MaxAmount,
-                    TotalSpent = totalSpent
+                    TotalSpent = totalSpent,
+                    IsSystem = budget.IsSystem
                 };
             }
             catch (Exception e)

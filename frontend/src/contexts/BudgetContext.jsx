@@ -5,8 +5,6 @@ import { useAuth } from "./AuthContext"
 
 const BudgetsContext = React.createContext()
 
-//export const UNCATEGORIZED_BUDGET_ID = 0;
-
 export function useBudgets() {
     return useContext(BudgetsContext)
 }
@@ -16,6 +14,8 @@ export const BudgetsProvider = ({ children }) => {
     const [expensesByBudget, setExpensesByBudget] = useState({});
     const { isAuthenticated } = useAuth();
     const [loadBudgetsError, setLoadBudgetsError] = useState(null);
+
+    const uncategorizedBudget = allBudgets.find(b => b.isSystem);
 
     useEffect(() => {
         if (!isAuthenticated) return;
@@ -69,7 +69,7 @@ export const BudgetsProvider = ({ children }) => {
     async function deleteBudget(id) {
         const response = await axiosClient.delete(`/api/budget/${id}`)
         setAllBudgets(prev => prev.filter(b => b.id !== id));
-        getBudgetExpenses(UNCATEGORIZED_BUDGET_ID);
+        getBudgetExpenses(uncategorizedBudget?.id);
     }
 
     // Add a new expense
@@ -100,6 +100,7 @@ export const BudgetsProvider = ({ children }) => {
     return (
     <BudgetsContext.Provider value={{
         allBudgets,
+        uncategorizedBudget,
         expensesByBudget,
         loadBudgetsError,
         setLoadBudgetsError,

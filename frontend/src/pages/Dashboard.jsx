@@ -9,13 +9,12 @@ import AddBudgetModal from "../components/AddBudgetModal";
 import AddExpenseModal from "../components/AddExpenseModal";
 import EditBudgetModal from "../components/EditBudgetModal"
 import TotalBudgetCard from "../components/TotalBudgetCard"
-//import { UNCATEGORIZED_BUDGET_ID, useBudgets } from '../contexts/BudgetContext';
 import { useBudgets } from '../contexts/BudgetContext';
 
 
 function Dashboard() {
 
-  const { allBudgets, loadBudgetsError, setLoadBudgetsError } = useBudgets();
+  const { allBudgets, uncategorizedBudget, loadBudgetsError, setLoadBudgetsError, deleteBudget } = useBudgets();
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false)
   const [showEditBudgetModal, setShowEditBudgetModal] = useState(false);
 
@@ -51,7 +50,7 @@ function Dashboard() {
                {loadBudgetsError && (<Alert variant="danger" dismissible onClose={() => setLoadBudgetsError(null)}>{loadBudgetsError}</Alert>)}
               <div className="budgetCards">
                   {allBudgets.map(budget => 
-                     /*budget.id !== UNCATEGORIZED_BUDGET_ID ?  ( */
+                     budget.id !== uncategorizedBudget?.id ?  ( 
                          <BudgetCard
                           key={budget.id} 
                           name={budget.name}      
@@ -67,18 +66,19 @@ function Dashboard() {
                           onEditBudgetClick={() => {
                                 openEditBudgetModal(budget.id)
                                 setShowEditBudgetModal(true)
-                          }}      
+                          }}
+                          onDeleteBudgetClick={() => deleteBudget(budget.id)}
                       >
                       </BudgetCard>
-                   /* ) : null  */
+                    ) : null  
                   )}
                   <UncategorizedBudgetCard
                     onAddExpenseClick={() => {
-                        openAddExpenseModal(UNCATEGORIZED_BUDGET_ID)
+                        openAddExpenseModal(uncategorizedBudget?.id)
                         setShowAddExpenseModal(true)
                     }}
                     onViewExpensesClick={() =>
-                        setViewExpensesModal(UNCATEGORIZED_BUDGET_ID)
+                        setViewExpensesModal(uncategorizedBudget?.id)
                     }
                  /> 
                  <TotalBudgetCard/>                

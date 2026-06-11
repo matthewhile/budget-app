@@ -1,17 +1,24 @@
-import { Button, Card, ProgressBar, Stack } from "react-bootstrap";
+import { Button, Card, Dropdown, ProgressBar, Stack } from "react-bootstrap";
 import { currencyFormatter } from "../utils"
 import { FaEllipsisVertical } from "react-icons/fa6";
+import React from "react";
 
+const EditToggle = React.forwardRef(({ onClick }, ref) => (
+  <button className="editBudgetBtn" ref={ref} onClick={e => { e.preventDefault(); onClick(e); }}>
+    <FaEllipsisVertical size={20} />
+  </button>
+));
 
-export default function BudgetCard({ 
-    name, 
-    amount, 
-    max, 
-    gray, 
+export default function BudgetCard({
+    name,
+    amount,
+    max,
+    gray,
     hideButtons,
     onAddExpenseClick,
     onViewExpensesClick,
-    onEditBudgetClick
+    onEditBudgetClick,
+    onDeleteBudgetClick
   }) {
     const classNames = []
     if (amount > max) {
@@ -23,9 +30,13 @@ export default function BudgetCard({
   return (
     <Card className={classNames.join(" ")}>
       {name.toLowerCase() !== "uncategorized" && name.toLowerCase() !== "total" && (
-        <button className="editBudgetBtn" onClick={onEditBudgetClick}>
-          <FaEllipsisVertical size={20} />
-        </button>
+        <Dropdown>
+          <Dropdown.Toggle as={EditToggle} />
+          <Dropdown.Menu>
+            <Dropdown.Item onClick={onEditBudgetClick}>Edit</Dropdown.Item>
+            <Dropdown.Item onClick={onDeleteBudgetClick} className="text-danger">Delete</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
       )}
         <Card.Body>
             <Card.Title className="d-flex justify-content-between align-items-baseline fw-normal mb-3">
