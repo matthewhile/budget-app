@@ -6,6 +6,7 @@ import BudgetCard from '../components/BudgetCard';
 import UncategorizedBudgetCard from "../components/UncategorizedBudgetCard";
 import ViewExpensesModal from "../components/ViewExpensesModal";
 import AddBudgetModal from "../components/AddBudgetModal";
+import ConfirmDeleteBudgetModal from '../components/ConfirmDeleteModal';
 import AddExpenseModal from "../components/AddExpenseModal";
 import EditBudgetModal from "../components/EditBudgetModal"
 import TotalBudgetCard from "../components/TotalBudgetCard"
@@ -16,7 +17,8 @@ function Dashboard() {
 
   const { allBudgets, uncategorizedBudget, loadBudgetsError, setLoadBudgetsError, deleteBudget } = useBudgets();
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false)
-  const [showEditBudgetModal, setShowEditBudgetModal] = useState(false);
+  const [showEditBudgetModal, setShowEditBudgetModal] = useState(false)
+  const [showConfirmDelteBudgetModal, setShowConfirmDelteBudgetModal] = useState(false)
 
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false)
   const [viewExpensesModal, setViewExpensesModal] = useState();
@@ -27,6 +29,11 @@ function Dashboard() {
 
   function openAddExpenseModal(budgetId) {
       setShowAddExpenseModal(true)
+      setSelectedBudgetId(budgetId)
+  }
+
+  function openConfirmDeleteBudgetModal(budgetId) {
+      setShowConfirmDelteBudgetModal(true)
       setSelectedBudgetId(budgetId)
   }
 
@@ -67,7 +74,10 @@ function Dashboard() {
                                 openEditBudgetModal(budget.id)
                                 setShowEditBudgetModal(true)
                           }}
-                          onDeleteBudgetClick={() => deleteBudget(budget.id)}
+                          onDeleteBudgetClick={() => {
+                                openConfirmDeleteBudgetModal(budget.id)
+                                setShowConfirmDelteBudgetModal(true)
+                          }}
                       >
                       </BudgetCard>
                     ) : null  
@@ -93,6 +103,11 @@ function Dashboard() {
                 budgetId={selectedBudgetId}
                 handleClose={() => setShowEditBudgetModal(false)}
           />
+          <ConfirmDeleteBudgetModal
+                show={showConfirmDelteBudgetModal}
+                budgetId={selectedBudgetId}
+                handleClose={() => setShowConfirmDelteBudgetModal(false)}
+           />
           <AddExpenseModal
                 show={showAddExpenseModal}
                 defaultBudgetId={selectedBudgetId}
