@@ -15,4 +15,13 @@ public class BudgetAppDbContext : IdentityDbContext<User>
     public DbSet<Budget> Budgets { get; set; }
     public DbSet<Expense> Expenses { get; set; }
     public DbSet<Timeperiod> TimePeriods { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+
+        builder.Entity<Timeperiod>()
+            .HasIndex(tp => new { tp.UserId, tp.Month, tp.Year })
+            .IsUnique();
+    }
 }
