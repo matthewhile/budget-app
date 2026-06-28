@@ -8,6 +8,11 @@ using BudgetApp.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddJsonFile(
+    "appsettings.Local.json",
+    optional: true,
+    reloadOnChange: true);
+
 // Add PostgreSQL db context 
 builder.Services.AddDbContext<BudgetAppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("BudgetAppDB")));
