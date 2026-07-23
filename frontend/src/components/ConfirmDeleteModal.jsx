@@ -23,9 +23,8 @@ export default function ConfirmDeleteBudgetModal({ show, budgetId, handleClose }
 
     return (
     <Modal show={show} onHide={handleClose}>
-        {/* <Form onSubmit={handleSaveBudget}> */}
         <Modal.Header closeButton>
-            <Modal.Title className="text-danger">Delete Budget: {budget?.name}</Modal.Title>
+            <Modal.Title className="text-danger">Delete Budget - {budget?.name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
             <div className="mb-4">
@@ -44,7 +43,6 @@ export default function ConfirmDeleteBudgetModal({ show, budgetId, handleClose }
             </div>
             {deleteError && (<Alert variant="danger">{deleteError}</Alert>)}
         </Modal.Body>
-        {/* </Form> */}
     </Modal>
     )
 }

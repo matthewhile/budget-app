@@ -37,17 +37,6 @@ const [deleteError, setDeleteError] = useState(null);
     }
   }
 
-  // const handleDeleteBudget = async () => {
-  //   setDeleteError(null)
-  //   try {
-  //     await deleteBudget(budgetId);
-  //     handleClose();
-  //   } catch (error) {
-  //     console.error("Failed to delete buget", error)
-  //     setDeleteError("Something wen't wrong! Failed to delete budget.");
-  //   }
-  // }
-
   return (
     <Modal show={show} onHide={handleClose}>
       <Form onSubmit={handleSaveBudget}>
@@ -81,11 +70,9 @@ const [deleteError, setDeleteError] = useState(null);
             />
           </Form.Group>
           {submitError && (<Alert variant="danger">{submitError}</Alert>)}
-          <div className="d-flex justify-content-between">
-            {/* <Button onClick={handleDeleteBudget} variant="outline-danger">Delete Budget</Button> */}
+          <div className="d-flex justify-content-end">
             <Button variant="primary" type="submit">Save</Button>
           </div>
-          {deleteError && (<Alert variant="danger">{deleteError}</Alert>)}
         </Modal.Body>
       </Form>
     </Modal>

@@ -47,7 +47,9 @@ function Login() {
                             </span>
                         </div>
                     </Form.Group>
-                    <Button className="login-btn" type="submit">Login</Button>
+                    <div className="d-flex justify-content-end">
+                        <Button className="mt-3" type="submit">Login</Button>
+                    </div>
                 </Form>
             </div>
         </div>
