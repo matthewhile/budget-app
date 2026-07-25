@@ -11,7 +11,7 @@ export default function AddExpenseModal({ show, handleClose, defaultBudgetId }) 
 
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [submitError, setSubmitError] = useState(null)
-  const { addExpense, allBudgets } = useBudgets();
+  const { addExpense, budgets } = useBudgets();
 
   const handleAddExpense = async (e) => {
     e.preventDefault()
@@ -60,7 +60,7 @@ export default function AddExpenseModal({ show, handleClose, defaultBudgetId }) 
           <Form.Group className="mb-3" controlId="budgetId">
             <Form.Label>Budget</Form.Label>
             <Form.Select defaultValue={defaultBudgetId} ref={budgetIdRef}>
-                {allBudgets.map((budget)=> (
+                {budgets.map((budget)=> (
                     <option key={budget.id} value={budget.id}>
                       {budget.name}
                     </option>

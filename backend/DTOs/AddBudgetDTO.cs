@@ -8,6 +8,6 @@
 
         public decimal MaxAmount { get; set; }
 
-        public int TimePeriodId { get; set; } = 1;
+        public int TimePeriodId { get; set; }
     }
 }

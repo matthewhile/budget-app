@@ -9,29 +9,39 @@ namespace BudgetApp.Services
     public class BudgetService
     {
         private readonly BudgetAppDbContext _context;
+        private readonly TimePeriodService _timePeriodService;
 
-        public BudgetService(BudgetAppDbContext context)
+        public BudgetService(BudgetAppDbContext context, TimePeriodService timePeriodService)
         {
             _context = context;
+            _timePeriodService = timePeriodService;
         }
 
-        // Return all budgets
-        public async Task<List<BudgetDTO>> GetAllBudgetsAsync(string userId)
+        // Return all budgets for the given month/year period
+        public async Task<BudgetListResponseDTO> GetAllBudgetsAsync(string userId, int month, int year)
         {
-            try 
+            try
             {
-                return await _context.Budgets
-                .Where(b => b.UserId == userId)
-                .Select(b => new BudgetDTO
+                var period = await _timePeriodService.GetOrCreatePeriodAsync(userId, month, year);
+
+                var budgets = await _context.Budgets
+                    .Where(b => b.UserId == userId && b.TimePeriodId == period.Id)
+                    .Select(b => new BudgetDTO
+                    {
+                        Id = b.Id,
+                        Name = b.Name,
+                        MaxAmount = b.MaxAmount,
+                        TotalSpent = b.Expenses.Sum(e => e.Amount),
+                        TimePeriodId = b.TimePeriodId,
+                        IsSystem = b.IsSystem,
+                    })
+                    .ToListAsync();
+
+                return new BudgetListResponseDTO
                 {
-                    Id = b.Id,
-                    Name = b.Name,
-                    MaxAmount = b.MaxAmount,
-                    TotalSpent = b.Expenses.Sum(e => e.Amount),
-                    TimePeriodId = b.TimePeriodId,
-                    IsSystem = b.IsSystem,
-                })
-                .ToListAsync();
+                    TimePeriod = period,
+                    Budgets = budgets
+                };
             }
             catch (Exception e)
             {
@@ -87,7 +97,7 @@ namespace BudgetApp.Services
                 {
                     Name = dto.Name,
                     MaxAmount = dto.MaxAmount,
-                    TimePeriodId = 1,
+                    TimePeriodId = dto.TimePeriodId,
                     UserId = userId
                 };
 
@@ -166,10 +176,13 @@ namespace BudgetApp.Services
                 if (budget == null)
                     throw new KeyNotFoundException();
 
+                var systemBudget = await _context.Budgets
+                    .FirstOrDefaultAsync(b => b.UserId == userId && b.IsSystem && b.TimePeriodId == budget.TimePeriodId);
+
                 var expenses = budget.Expenses;
                 foreach (var expense in expenses)
                 {
-                    expense.BudgetId = 1;
+                    expense.BudgetId = systemBudget!.Id;
                 }
 
                 _context.Budgets.Remove(budget);

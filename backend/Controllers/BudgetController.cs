@@ -20,15 +20,13 @@ namespace BudgetApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllBudgets()
+        public async Task<IActionResult> GetAllBudgets([FromQuery] int month, [FromQuery] int year)
         {
             var userId = _userManager.GetUserId(User);
             if (userId == null) return Unauthorized();
 
-            var budgets = await _budgetService.GetAllBudgetsAsync(userId);
-            if (budgets == null) return NotFound();
-
-            return Ok(budgets);
+            var result = await _budgetService.GetAllBudgetsAsync(userId, month, year);
+            return Ok(result);
         }
 
         [HttpGet("budgetId/{id}")]

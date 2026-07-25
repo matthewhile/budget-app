@@ -6,7 +6,7 @@ import { formatDate } from "../utils"
 
 export default function ViewExpensesModal({ budgetId, handleClose }) {
 
-  const { allBudgets, getBudgetExpenses, deleteExpense, expensesByBudget } = useBudgets();
+  const { budgets, getBudgetExpenses, deleteExpense, expensesByBudget } = useBudgets();
   const [deleteError, setDeleteError] = useState(null);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
   const expenses = expensesByBudget[budgetId] || [];
 
   const hasNoExpenses = expenses.length === 0;
-  const budget = allBudgets.find(b => b.id === budgetId);
+  const budget = budgets.find(b => b.id === budgetId);
   const budgetName = budget ? budget.name : null;
 
   const handleDeleteExpense = async (expense) => {

@@ -1,6 +1,6 @@
 import '../styles/Dashboard.css';
 import { useState } from 'react';
-import { Container, Stack, Button, Alert } from 'react-bootstrap';
+import { Container, Stack, Button, Alert, Form } from 'react-bootstrap';
 import {useAuth} from "../contexts/AuthContext"
 import BudgetCard from '../components/BudgetCard';
 import UncategorizedBudgetCard from "../components/UncategorizedBudgetCard";
@@ -12,10 +12,19 @@ import EditBudgetModal from "../components/EditBudgetModal"
 import TotalBudgetCard from "../components/TotalBudgetCard"
 import { useBudgets } from '../contexts/BudgetContext';
 
+const MONTHS = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+
+const now = new Date();
+const CURRENT_YEAR = now.getFullYear();
+const CURRENT_MONTH = now.getMonth() + 1;
+const YEARS = [CURRENT_YEAR, CURRENT_YEAR + 1];
 
 function Dashboard() {
 
-  const { allBudgets, uncategorizedBudget, loadBudgetsError, setLoadBudgetsError, deleteBudget } = useBudgets();
+  const { budgets, uncategorizedBudget, loadBudgetsError, setLoadBudgetsError, deleteBudget, loadBudgets } = useBudgets();
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false)
   const [showEditBudgetModal, setShowEditBudgetModal] = useState(false)
   const [showConfirmDelteBudgetModal, setShowConfirmDelteBudgetModal] = useState(false)
@@ -23,9 +32,14 @@ function Dashboard() {
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false)
   const [viewExpensesModal, setViewExpensesModal] = useState();
 
-  const [selectedBudgetId, setSelectedBudgetId] = useState() 
+  const [selectedBudgetId, setSelectedBudgetId] = useState()
+
+  const [selectedYear, setSelectedYear] = useState(CURRENT_YEAR);
+  const [selectedMonth, setSelectedMonth] = useState(CURRENT_MONTH);
 
   const {logout} = useAuth()
+
+  const currentMonthName = MONTHS[selectedMonth - 1]
 
   function openAddExpenseModal(budgetId) {
       setShowAddExpenseModal(true)
@@ -42,6 +56,20 @@ function Dashboard() {
       setSelectedBudgetId(budgetId)
   }
 
+  function handleYearChange(e) {
+      const newYear = parseInt(e.target.value);
+      const newMonth = newYear === CURRENT_YEAR ? CURRENT_MONTH : 1;
+      setSelectedYear(newYear);
+      setSelectedMonth(newMonth);
+      loadBudgets(newMonth, newYear);
+  }
+
+  function handleMonthChange(e) {
+      const newMonth = parseInt(e.target.value);
+      setSelectedMonth(newMonth);
+      loadBudgets(newMonth, selectedYear);
+  }
+
   return (
       <>
         <div className="dashboard-container">
@@ -50,19 +78,39 @@ function Dashboard() {
                 <Button varient="primary" onClick={() => logout()}>Log out</Button>
             </div>
               <Stack direction="horizontal" gap="2" className="mb-4">
-                  <h1 className="me-auto">Budgets</h1>
+                  <h1 className="me-auto">{currentMonthName} Budgets</h1>
                   <Button variant="primary" onClick={() => setShowAddBudgetModal(true)}>Add Budget</Button>
                   <Button variant="outline-primary" onClick={() => setShowAddExpenseModal(true)}>Add Expense</Button>
               </Stack>
+              <Stack direction="horizontal" gap="2" className="mb-4">
+                  <Form.Select
+                      style={{ width: "auto" }}
+                      value={selectedYear}
+                      onChange={handleYearChange}
+                  >
+                      {YEARS.map(y => (
+                          <option key={y} value={y}>{y}</option>
+                      ))}
+                  </Form.Select>
+                  <Form.Select
+                      style={{ width: "auto" }}
+                      value={selectedMonth}
+                      onChange={handleMonthChange}
+                  >
+                      {MONTHS.map((name, i) => (
+                          <option key={i + 1} value={i + 1}>{name}</option>
+                      ))}
+                  </Form.Select>
+              </Stack>
                {loadBudgetsError && (<Alert variant="danger" dismissible onClose={() => setLoadBudgetsError(null)}>{loadBudgetsError}</Alert>)}
               <div className="budgetCards">
-                  {allBudgets.map(budget => 
-                     budget.id !== uncategorizedBudget?.id ?  ( 
+                  {budgets.map(budget =>
+                     budget.id !== uncategorizedBudget?.id ?  (
                          <BudgetCard
-                          key={budget.id} 
-                          name={budget.name}      
+                          key={budget.id}
+                          name={budget.name}
                           amount={budget.totalSpent}
-                          max={budget.maxAmount}     
+                          max={budget.maxAmount}
                           onAddExpenseClick={() => {
                                 openAddExpenseModal(budget.id)
                                 setShowAddExpenseModal(true)
@@ -80,7 +128,7 @@ function Dashboard() {
                           }}
                       >
                       </BudgetCard>
-                    ) : null  
+                    ) : null
                   )}
                   <UncategorizedBudgetCard
                     onAddExpenseClick={() => {
@@ -90,8 +138,8 @@ function Dashboard() {
                     onViewExpensesClick={() =>
                         setViewExpensesModal(uncategorizedBudget?.id)
                     }
-                 /> 
-                 <TotalBudgetCard/>                
+                 />
+                 <TotalBudgetCard/>
               </div>
           </Container>
           <AddBudgetModal
@@ -119,7 +167,7 @@ function Dashboard() {
           />
 
         </div>
-    </>           
+    </>
   )
 }
 

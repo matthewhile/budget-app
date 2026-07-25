@@ -17,6 +17,7 @@ builder.Configuration.AddJsonFile(
 builder.Services.AddDbContext<BudgetAppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("BudgetAppDB")));
 
+builder.Services.AddScoped<TimePeriodService>();
 builder.Services.AddScoped<BudgetService>();
 builder.Services.AddScoped<ExpenseService>();
 

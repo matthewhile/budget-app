@@ -5,10 +5,10 @@ import { useBudgets } from "../contexts/BudgetContext"
 
 export default function ConfirmDeleteBudgetModal({ show, budgetId, handleClose }) {
 
-    const { allBudgets, deleteBudget } = useBudgets();
+    const { budgets, deleteBudget } = useBudgets();
     const [deleteError, setDeleteError] = useState(null);
 
-    const budget = allBudgets.find(b => b.id === budgetId);
+    const budget = budgets.find(b => b.id === budgetId);
 
     const handleDeleteBudget = async () => {
     setDeleteError(null)
