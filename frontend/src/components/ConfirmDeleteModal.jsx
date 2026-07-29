@@ -23,7 +23,7 @@ export default function ConfirmDeleteBudgetModal({ show, budgetId, handleClose }
 
     return (
     <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
+        <Modal.Header closeButton className="bg-danger bg-opacity-10">
             <Modal.Title className="text-danger">Delete Budget - {budget?.name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>

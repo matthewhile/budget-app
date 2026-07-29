@@ -1,4 +1,4 @@
-import { Modal, Button, Stack, Alert } from "react-bootstrap"
+import { Modal, Button, Alert, Table } from "react-bootstrap"
 import { useBudgets } from "../contexts/BudgetContext"
 import { currencyFormatter } from "../utils"
 import { useEffect, useState } from "react"
@@ -28,40 +28,48 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
     } catch (error) {
         console.log(error);
         setDeleteError("Something wen't wrong! Failed to delete expense.");
-    }    
+    }
   }
 
   return (
-    <Modal show={budgetId != null} onHide={handleClose}>
+    <Modal show={budgetId != null} onHide={handleClose} size="lg">
       <Modal.Header closeButton>
-        <Modal.Title>
-          <Stack direction="horizontal" gap="2">
-            <div>Expenses - {budgetName} </div>
-          </Stack>
-        </Modal.Title>
+        <Modal.Title>{budgetName} Expenses</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Stack direction="vertical" gap="3">
-          {hasNoExpenses && (
-            <span>No expenses for this budget</span>
-          )}
-            {/* <div className="me-auto" gap="2">
-                <span>Name</span>
-                <span>Date</span>
-                <span>Amount</span>
-            </div> */}
-            {expenses.map(expense => (
-                <Stack direction="horizontal" gap="2" key={expense.id}>
-                <div className="me-auto fs-4">{expense.description}</div>
-                <div className="me-fixed fs-5">{formatDate(expense.date)}</div>
-                <div className="fs-5">
-                    {currencyFormatter.format(expense.amount)}
-                </div>
-                <Button onClick={() => handleDeleteExpense(expense)} size="sm" variant="outline-danger"> &times;</Button>
-                </Stack>
-            ))}
-        </Stack>
-        {deleteError && (<Alert variant="danger">{deleteError}</Alert>)}
+        {hasNoExpenses ? (
+          <p className="text-muted text-center my-3">No expenses for this budget.</p>
+        ) : (
+          <Table hover responsive className="mb-0 table-striped">
+            <thead className="table-success">
+              <tr>
+                <th>Description</th>
+                <th className="text-center">Amount</th>
+                <th className="text-end">Date</th>
+                <th style={{ width: "2rem" }}></th>
+              </tr>
+            </thead>
+            <tbody>
+              {expenses.map(expense => (
+                <tr key={expense.id}>
+                  <td className="align-middle">{expense.description}</td>
+                  <td className="align-middle text-center fw-semibold">{currencyFormatter.format(expense.amount)}</td>
+                  <td className="align-middle text-end text-muted">{formatDate(expense.date)}</td>
+                  <td className="align-middle text-center">
+                    <Button
+                      onClick={() => handleDeleteExpense(expense)}
+                      size="sm"
+                      variant="outline-danger"
+                    >
+                      &times;
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
+        {deleteError && <Alert variant="danger" className="mt-3 mb-0">{deleteError}</Alert>}
       </Modal.Body>
     </Modal>
   )
