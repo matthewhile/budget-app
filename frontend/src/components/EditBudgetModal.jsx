@@ -4,20 +4,16 @@ import { useBudgets } from "../contexts/BudgetContext"
 
 export default function EditBudgetModal({ show, budgetId, handleClose }) {
 
-const {updateBudget, getBudgetById, deleteBudget} = useBudgets();
+const { updateBudget, budgets } = useBudgets();
 const [selectedBudget, setSelectedBudget] = useState(null);
 const [submitError, setSubmitError] = useState(null);
-const [deleteError, setDeleteError] = useState(null);
 
-  // Fetch existing budget data only when modal opens or budgetId changes
   useEffect(() => {
     if (budgetId && show) {
-      getBudgetById(budgetId).then((data) => {
-        setSelectedBudget({
-          name: data.name,
-          maxAmount: data.maxAmount
-        })
-      })
+      const data = budgets.find(b => b.id === budgetId);
+      if (data) {
+        setSelectedBudget({ name: data.name, maxAmount: data.maxAmount });
+      }
     }
   }, [budgetId, show]) 
 
@@ -31,8 +27,8 @@ const [deleteError, setDeleteError] = useState(null);
     try {
       await updateBudget(budgetId, budget);
       handleClose();
-    } catch {
-      console.error("Error updating budget " + budget.id, error);
+    } catch (error) {
+      console.error("Error updating budget " + budgetId, error);
       setSubmitError("Failed to update budget. Please try again.")
     }
   }
@@ -61,8 +57,8 @@ const [deleteError, setDeleteError] = useState(null);
               value={selectedBudget?.maxAmount}
               type="number"
               required
-              min={1}
-              step={1}
+              min={0.01}
+              step={0.01}
               onChange={(e) =>
                 setSelectedBudget((prev) => ({
                   ...prev, maxAmount: parseFloat(e.target.value)}))
