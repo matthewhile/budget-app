@@ -15,6 +15,7 @@ public class BudgetAppDbContext : IdentityDbContext<User>
     public DbSet<Budget> Budgets { get; set; }
     public DbSet<Expense> Expenses { get; set; }
     public DbSet<Timeperiod> TimePeriods { get; set; }
+    public DbSet<DefaultBudget> DefaultBudgets { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
