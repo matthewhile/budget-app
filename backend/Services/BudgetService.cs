@@ -50,6 +50,36 @@ namespace BudgetApp.Services
             }
         }
 
+        // Return one budget per unique name for the user, using the most recent time period when names repeat
+        public async Task<List<DefaultBudgetDTO>> GetDefaultBudgetsAsync(string userId)
+        {
+            try
+            {
+                var budgets = await _context.Budgets
+                    .Where(b => b.UserId == userId && !b.IsSystem)
+                    .Include(b => b.Timeperiod)
+                    .ToListAsync();
+
+                return budgets
+                    .GroupBy(b => b.Name)
+                    .Select(g => g
+                        .OrderByDescending(b => b.Timeperiod.Year)
+                        .ThenByDescending(b => b.Timeperiod.Month)
+                        .First())
+                    .Select(b => new DefaultBudgetDTO
+                    {
+                        Name = b.Name,
+                        MaxAmount = b.MaxAmount
+                    })
+                    .ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
         // Return a specified budget and the expenses assigned to it
         public async Task<BudgetDTO> GetBudgetByIdAsync(int id, string userId)
         {

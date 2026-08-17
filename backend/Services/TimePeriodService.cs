@@ -16,40 +16,49 @@ namespace BudgetApp.Services
 
         public async Task<TimePeriodDTO> GetOrCreatePeriodAsync(string userId, int month, int year)
         {
-            var period = await _context.TimePeriods
-                .FirstOrDefaultAsync(tp => tp.UserId == userId && tp.Month == month && tp.Year == year);
-
-            if (period == null)
+            try
             {
-                period = new Timeperiod
+                var period = await _context.TimePeriods
+                    .FirstOrDefaultAsync(tp => tp.UserId == userId && tp.Month == month && tp.Year == year);
+
+                if (period == null)
                 {
-                    UserId = userId,
-                    Month = month,
-                    Year = year
-                };
+                    period = new Timeperiod
+                    {
+                        UserId = userId,
+                        Month = month,
+                        Year = year
+                    };
 
-                _context.TimePeriods.Add(period);
-                await _context.SaveChangesAsync();
+                    _context.TimePeriods.Add(period);
+                    await _context.SaveChangesAsync();
 
-                var systemBudget = new Budget
+                    var systemBudget = new Budget
+                    {
+                        Name = "Uncategorized",
+                        MaxAmount = 0,
+                        IsSystem = true,
+                        TimePeriodId = period.Id,
+                        UserId = userId
+                    };
+
+                    _context.Budgets.Add(systemBudget);
+                    await _context.SaveChangesAsync();
+                }
+
+                return new TimePeriodDTO
                 {
-                    Name = "Uncategorized",
-                    MaxAmount = 0,
-                    IsSystem = true,
-                    TimePeriodId = period.Id,
-                    UserId = userId
+                    Id = period.Id,
+                    Month = period.Month,
+                    Year = period.Year
                 };
-
-                _context.Budgets.Add(systemBudget);
-                await _context.SaveChangesAsync();
             }
-
-            return new TimePeriodDTO
+            catch (Exception e) 
             {
-                Id = period.Id,
-                Month = period.Month,
-                Year = period.Year
-            };
+                Console.WriteLine(e.Message);
+                throw;
+
+            }
         }
     }
 }
