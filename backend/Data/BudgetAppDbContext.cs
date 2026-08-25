@@ -28,5 +28,9 @@ public class BudgetAppDbContext : IdentityDbContext<User>
         builder.Entity<Budget>()
             .HasIndex(b => new { b.UserId, b.Name, b.TimePeriodId })
             .IsUnique();
+
+        builder.Entity<DefaultBudget>()
+            .HasIndex(db => new { db.UserId, db.Name })
+            .IsUnique();
     }
 }

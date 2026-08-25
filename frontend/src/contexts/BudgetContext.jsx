@@ -13,6 +13,7 @@ export const BudgetsProvider = ({ children }) => {
     const [budgets, setBudgets] = useState([]);
     const [currentPeriod, setCurrentPeriod] = useState(null);
     const [expensesByBudget, setExpensesByBudget] = useState({});
+    const [defaultBudgets, setDefaultBudgets] = useState([]);
     const { isAuthenticated } = useAuth();
     const [loadBudgetsError, setLoadBudgetsError] = useState(null);
 
@@ -107,6 +108,18 @@ export const BudgetsProvider = ({ children }) => {
         ));
     }
 
+    // Get the user's available budget names and which are currently saved as defaults
+    async function loadDefaultBudgets() {
+        const response = await axiosClient.get("/api/budget/default");
+        setDefaultBudgets(response.data);
+    }
+
+    // Replace the user's saved default budgets with the given selection
+    async function syncDefaultBudgets(selected) {
+        const response = await axiosClient.put("/api/budget/default", selected);
+        setDefaultBudgets(response.data);
+    }
+
 
     return (
     <BudgetsContext.Provider value={{
@@ -114,6 +127,7 @@ export const BudgetsProvider = ({ children }) => {
         currentPeriod,
         uncategorizedBudget,
         expensesByBudget,
+        defaultBudgets,
         loadBudgetsError,
         setLoadBudgetsError,
         loadBudgets,
@@ -123,7 +137,9 @@ export const BudgetsProvider = ({ children }) => {
         updateBudget,
         deleteBudget,
         addExpense,
-        deleteExpense
+        deleteExpense,
+        loadDefaultBudgets,
+        syncDefaultBudgets
     }}>{children}</BudgetsContext.Provider>
   )
 }

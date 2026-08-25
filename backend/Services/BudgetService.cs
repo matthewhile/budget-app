@@ -50,7 +50,8 @@ namespace BudgetApp.Services
             }
         }
 
-        // Return one budget per unique name for the user, using the most recent time period when names repeat
+        // Return one budget per unique name for the user (using the most recent time period when names repeat),
+        // flagged with whether that name is currently saved as a DefaultBudget
         public async Task<List<DefaultBudgetDTO>> GetDefaultBudgetsAsync(string userId)
         {
             try
@@ -59,6 +60,12 @@ namespace BudgetApp.Services
                     .Where(b => b.UserId == userId && !b.IsSystem)
                     .Include(b => b.Timeperiod)
                     .ToListAsync();
+
+                var selectedNames = (await _context.DefaultBudgets
+                    .Where(db => db.UserId == userId)
+                    .Select(db => db.Name)
+                    .ToListAsync())
+                    .ToHashSet();
 
                 return budgets
                     .GroupBy(b => b.Name)
@@ -69,9 +76,45 @@ namespace BudgetApp.Services
                     .Select(b => new DefaultBudgetDTO
                     {
                         Name = b.Name,
-                        MaxAmount = b.MaxAmount
+                        MaxAmount = b.MaxAmount,
+                        IsSelected = selectedNames.Contains(b.Name)
                     })
                     .ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        // Replace the user's DefaultBudget records with exactly the set they submitted
+        public async Task<List<DefaultBudgetDTO>> SyncDefaultBudgetsAsync(string userId, List<DefaultBudgetDTO> selected)
+        {
+            try
+            {
+                var existing = await _context.DefaultBudgets
+                    .Where(db => db.UserId == userId)
+                    .ToListAsync();
+
+                _context.DefaultBudgets.RemoveRange(existing);
+
+                var newDefaults = selected.Select(dto => new DefaultBudget
+                {
+                    Name = dto.Name,
+                    MaxAmount = dto.MaxAmount,
+                    UserId = userId
+                }).ToList();
+
+                _context.DefaultBudgets.AddRange(newDefaults);
+                await _context.SaveChangesAsync();
+
+                return newDefaults.Select(db => new DefaultBudgetDTO
+                {
+                    Name = db.Name,
+                    MaxAmount = db.MaxAmount,
+                    IsSelected = true
+                }).ToList();
             }
             catch (Exception e)
             {

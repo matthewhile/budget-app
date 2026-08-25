@@ -43,6 +43,23 @@ namespace BudgetApp.Services
                     };
 
                     _context.Budgets.Add(systemBudget);
+
+                    var defaultBudgets = await _context.DefaultBudgets
+                        .Where(db => db.UserId == userId)
+                        .ToListAsync();
+
+                    foreach (var defaultBudget in defaultBudgets)
+                    {
+                        _context.Budgets.Add(new Budget
+                        {
+                            Name = defaultBudget.Name,
+                            MaxAmount = defaultBudget.MaxAmount,
+                            TimePeriodId = period.Id,
+                            UserId = userId,
+                            IsSystem = false
+                        });
+                    }
+
                     await _context.SaveChangesAsync();
                 }
 

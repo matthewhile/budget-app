@@ -29,6 +29,28 @@ namespace BudgetApp.Controllers
             return Ok(result);
         }
 
+        [HttpGet("default")]
+        public async Task<IActionResult> GetDefaultBudgets()
+        {
+            var userId = _userManager.GetUserId(User);
+            if (userId == null) return Unauthorized();
+
+            var defaultBudgets = await _budgetService.GetDefaultBudgetsAsync(userId);
+            return Ok(defaultBudgets);
+        }
+
+        [HttpPut("default")]
+        public async Task<IActionResult> SyncDefaultBudgets([FromBody] List<DefaultBudgetDTO> selected)
+        {
+            if (selected == null) return BadRequest();
+
+            var userId = _userManager.GetUserId(User);
+            if (userId == null) return Unauthorized();
+
+            var result = await _budgetService.SyncDefaultBudgetsAsync(userId, selected);
+            return Ok(result);
+        }
+
         [HttpGet("budgetId/{id}")]
         public async Task<IActionResult> GetBudgetById(int id)
         {

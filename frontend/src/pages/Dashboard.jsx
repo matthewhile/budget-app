@@ -9,6 +9,7 @@ import AddBudgetModal from "../components/AddBudgetModal";
 import ConfirmDeleteBudgetModal from '../components/ConfirmDeleteModal';
 import AddExpenseModal from "../components/AddExpenseModal";
 import EditBudgetModal from "../components/EditBudgetModal"
+import ManageDefaultBudgetsModal from "../components/ManageDefaultBudgetsModal"
 import TotalBudgetCard from "../components/TotalBudgetCard"
 import { useBudgets } from '../contexts/BudgetContext';
 
@@ -28,6 +29,7 @@ function Dashboard() {
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false)
   const [showEditBudgetModal, setShowEditBudgetModal] = useState(false)
   const [showConfirmDelteBudgetModal, setShowConfirmDelteBudgetModal] = useState(false)
+  const [showManageDefaultBudgetsModal, setShowManageDefaultBudgetsModal] = useState(false)
 
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false)
   const [viewExpensesModal, setViewExpensesModal] = useState();
@@ -81,6 +83,7 @@ function Dashboard() {
                   <h1 className="me-auto">{currentMonthName} Budgets</h1>
                   <Button variant="primary" onClick={() => setShowAddBudgetModal(true)}>Add Budget</Button>
                   <Button variant="outline-primary" onClick={() => setShowAddExpenseModal(true)}>Add Expense</Button>
+                  <Button variant="outline-secondary" onClick={() => setShowManageDefaultBudgetsModal(true)}>Manage Default Budgets</Button>
               </Stack>
               <Stack direction="horizontal" gap="2" className="mb-4">
                   <Form.Select
@@ -164,6 +167,10 @@ function Dashboard() {
           <ViewExpensesModal
                 budgetId={viewExpensesModal}
                 handleClose={() => setViewExpensesModal()}
+          />
+          <ManageDefaultBudgetsModal
+                show={showManageDefaultBudgetsModal}
+                handleClose={() => setShowManageDefaultBudgetsModal(false)}
           />
 
         </div>
