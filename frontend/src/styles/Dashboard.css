@@ -14,13 +14,15 @@ html, body {
 
 .card {
   padding: 2em;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
 }
 
 .budgetCards {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1rem;
-    align-items: flex-start; 
+    gap: 1.25rem;
+    align-items: flex-start;
 }
 
 .logout-btn {
@@ -32,6 +34,12 @@ html, body {
   border: none;
   cursor: pointer;
   padding: 8px;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.15s ease;
+}
+
+.editBudgetBtn:hover {
+  background-color: var(--color-bg);
 }
 
 .editBudgetBtn + .dropdown-menu,
@@ -42,10 +50,14 @@ html, body {
 }
 
 .editBudgetBtn svg {
-  color: black;
-  
+  color: var(--color-text-muted);
   width: 20px;
   height: 20px;
+  transition: color 0.15s ease;
+}
+
+.editBudgetBtn:hover svg {
+  color: var(--color-text);
 }
 
 /* Date picker wrapper styling */

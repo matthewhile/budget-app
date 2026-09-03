@@ -11,6 +11,7 @@ import AddExpenseModal from "../components/AddExpenseModal";
 import EditBudgetModal from "../components/EditBudgetModal"
 import ManageDefaultBudgetsModal from "../components/ManageDefaultBudgetsModal"
 import TotalBudgetCard from "../components/TotalBudgetCard"
+import ThemeToggle from "../components/ThemeToggle"
 import { useBudgets } from '../contexts/BudgetContext';
 
 const MONTHS = [
@@ -74,10 +75,11 @@ function Dashboard() {
 
   return (
       <>
+        <ThemeToggle />
         <div className="dashboard-container">
             <Container className="my-4">
             <div className="logout-btn">
-                <Button varient="primary" onClick={() => logout()}>Log out</Button>
+                <Button variant="outline-secondary" onClick={() => logout()}>Log out</Button>
             </div>
               <Stack direction="horizontal" gap="2" className="mb-4">
                   <h1 className="me-auto">{currentMonthName} Budgets</h1>
